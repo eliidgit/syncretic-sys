@@ -1,0 +1,14 @@
+<div class="row">
+	<div class="col-lg-12">
+		<ul id="select-tree" />
+	</div>
+
+</div>
+
+<script type="text/javascript">
+$.post("${url}", function(data){
+	$("#select-tree").yunmel_tree({
+        data:data
+    });
+},"json");
+</script>

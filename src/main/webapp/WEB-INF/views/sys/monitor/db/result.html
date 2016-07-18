@@ -1,0 +1,35 @@
+<script type="text/javascript">
+	var $table = null;
+</script>	
+<b class="red">${msg!}</b>
+@if(isEmpty(msg)){
+	<table id="table">	
+		<thead>
+			<tr>
+			@for(item in columns){
+				<th data-field="${item.key}" >${item.value}</th>
+			@}
+			</tr>
+		</thead>
+	</table>
+<script type="text/javascript">
+	$table = $("#table");
+	$table.bootstrapTable({
+		classes:'table table-striped table-hover',
+    	paginationFixed:true,
+    	sortName:'sort',
+    	checkboxFooter:false,
+    	queryParams:function(params){
+    		params['sql'] = '${sql}';
+    		return params;
+    	},
+    	showExport:false,
+    	url:"${ctxPath}/sys/monitor/db/sql/execute"
+    });
+    
+  @if(isEmpty(msg)){
+  	$("#search-form").hide();
+  	$("#showSqlInput").show();
+  @}  
+</script>
+@}

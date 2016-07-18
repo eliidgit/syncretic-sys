@@ -11,7 +11,7 @@
 
     <aop:config>
         <aop:advisor id="druidAdvisor" advice-ref="druidStatInterceptor"
-                     pointcut="execution(* com.bjnsc.ppm.*.service.*.*(..))" />
+                     pointcut="execution(* com.yunmel.frame.*.service.*.*(..))" />
     </aop:config>
 
 </beans>

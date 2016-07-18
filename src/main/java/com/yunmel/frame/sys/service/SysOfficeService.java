@@ -15,10 +15,6 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
-import com.yunmel.commons.service.BaseService;
-import com.yunmel.commons.service.RedisService;
-import com.yunmel.commons.utils.DealParamUtil;
-import com.yunmel.commons.utils.StrUtils;
 import com.yunmel.frame.common.utils.SysUserUtils;
 import com.yunmel.frame.consts.RedisKey;
 import com.yunmel.frame.sys.mapper.SysOfficeMapper;
@@ -27,6 +23,10 @@ import com.yunmel.frame.sys.model.SysOffice;
 import com.yunmel.frame.sys.model.SysRole;
 import com.yunmel.frame.sys.model.SysUser;
 import com.yunmel.frame.sys.vo.SysOfficeVO;
+import com.yunmel.syncretic.component.RedisService;
+import com.yunmel.syncretic.core.BaseService;
+import com.yunmel.syncretic.utils.biz.DealParamUtil;
+import com.yunmel.syncretic.utils.commons.StrUtils;
 
 /**
  * 

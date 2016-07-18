@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${appConf.get('LOGIN_SHOW_NAME')}-强制修改密码</title>
+    <link href="${ctxPath}/static/css/font-awesome.min.css"  rel="stylesheet">
+    <link href="${ctxPath}/static/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="${ctxPath}/static/login/css/style.css"  rel="stylesheet">
+	
+	
+	<!--[if lte IE 8]>
+		<script src="${ctxPath!}/static/js/plugins/bootstrap-ext/html5shiv.min.js"></script>
+		<script src="${ctxPath!}/static/js/plugins/bootstrap-ext/respond.min.js"></script>
+		<script>var ie8 = "ie8";</script>
+	<![endif]-->
+
+    <!--[if lt IE 9]>
+	<p class="chromeframe alert btn-danger">您的浏览器需要更新。该浏览器有诸多安全漏洞，无法显示本系统的所有功能。我们强烈建议您<a href="http://browsehappy.com">升级浏览器</a>，或<a href="http://dlsw.baidu.com/sw-search-sp/soft/9d/14744/ChromeStandalone_47.0.2526.106_Setup.1450323126.exe">安装 Google Chrome 浏览器内嵌框架</a>。</p>
+	<![endif]-->
+	
+	
+	<!--[if !IE]> -->
+	<script src="${ctxPath}/static/js/jquery-2.1.1.js"></script>
+	<!-- <![endif]-->
+	
+	<!--[if IE]>
+	<script src="${ctxPath!}/static/js/jquery-1.11.1.min.js"/>
+	<![endif]-->
+		
+    <script src="${ctxPath}/static/js/plugins/pace/pace.min.js" ></script>
+</head>
+
+<body>
+	<div id="container" class="cls-container">
+		
+		<div id="bg-overlay" class="bg-img img-balloon"></div>
+		
+		<div class="cls-header cls-header-lg">
+			<div class="cls-brand">
+				<a class="box-inline" >
+					<span class="brand-title">${appConf.get('LOGIN_SHOW_NAME')}</span>
+				</a>
+			</div>
+		</div>
+		
+		<div class="cls-content">
+			<div class="cls-content-sm panel">
+				<div class="panel-body">
+					<p class="pad-btm">首次登录强制修改密码</p>
+					<form action="${ctxPath}/sys/user/mod/pwd" id="mod-pwd-form" method="post">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
+								<input type="password" class="form-control" name="password"  placeholder="新密码">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon"><i class="fa fa-asterisk"></i></div>
+								<input type="password" name="confirmPassword" class="form-control" placeholder="确认密码">
+							</div>
+						</div>
+						<div class="mar-btm"></div>
+						<button class="btn btn-primary btn-lg btn-block"  type="submit" id="mod-pwd-submit" type="button">
+							<span>修改密码</span>
+						</button>
+					</form>
+				</div>
+			</div>
+			<div class="pad-ver">
+				
+			</div>
+		</div>
+
+		<div class="yunmel-bg">
+			<div id="yunmel-bg-list">
+				<div class="yunmel-loading"><i class="fa fa-refresh"></i></div>
+				<img class="yunmel-chg-bg bg-trans" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-trns.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-trns.jpg" alt="Background Image">
+				<img class="yunmel-chg-bg" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-img-1.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-img-1.jpg" alt="Background Image">
+				<img class="yunmel-chg-bg active" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-img-2.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-img-2.jpg" alt="Background Image">
+				<img class="yunmel-chg-bg" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-img-3.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-img-3.jpg" alt="Background Image">
+				<img class="yunmel-chg-bg" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-img-4.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-img-4.jpg" alt="Background Image">
+				<img class="yunmel-chg-bg" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-img-5.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-img-5.jpg" alt="Background Image">
+				<img class="yunmel-chg-bg" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-img-6.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-img-6.jpg" alt="Background Image">
+				<img class="yunmel-chg-bg" src="${ctxPath}/static/login/img/bg-img/thumbs/bg-img-7.jpg" tppabs="http://www.themeon.net/nifty/v2.3/img/bg-img/thumbs/bg-img-7.jpg" alt="Background Image">
+			</div>
+		</div>
+	</div>
+    <script src="${ctxPath}/static/js/jquery-2.1.1.js"></script>
+    <script src="${ctxPath}/static/js/bootstrap.min.js" ></script>
+    <script src="${ctxPath}/static/js/plugins/fast-click/fastclick.min.js"></script>
+    <script src="${ctxPath}/static/js/plugins/bootstrap-validator/bootstrapValidator.js"></script>
+    
+ <script type="text/javascript">
+ 	$(function(){
+	
+ 		 $('#mod-pwd-form').bootstrapValidator({
+            fields: {
+                password: {
+                    message: '新密码没有校验',
+                    validators: {
+                        notEmpty: {
+                            message: '新密码不能为空'
+                        },
+                        @if(appConf.get("PWD_STRONG_VERIFCATION") == "1"){
+                        regexp:{
+                        	regexp:/^(?![0-9]+$)(?![a-zA-Z]+$)[\w\W]{6,16}$/,
+                        	message:'密码至少包含一个字母和一个数字'
+                        },
+                        @}
+                        stringLength: {
+                            min: 6,
+                            max: 100,
+                            message: '密码在6-100个字符间（包括6和100）'
+                        }
+                    }
+                },
+                confirmPassword: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '请输入确认密码'
+	                    },
+	                    identical: {
+	                        field: 'password',
+	                        message: '两次输入的密码不一样'
+	                    },
+	                     @if(appConf.get("PWD_STRONG_VERIFCATION") == "1"){
+                        regexp:{
+                        	regexp:/^(?![0-9]+$)(?![a-zA-Z]+$)[\w\W]{6,16}$/,
+                        	message:'密码至少包含一个字母和一个数字'
+                        },
+                        @}
+                        stringLength: {
+                            min: 6,
+                            max: 16,
+                            message: '密码在6-16个字符间（包括6和100）'
+                        }
+	                }
+	            }
+            }
+        })
+        .on('success.form.bv', function(e) {
+            e.preventDefault();
+            $(e.target).ajaxSubmit(function(data){
+				if(data.code == 1){
+					window.location.href="${ctxPath}/logout";
+				}else{
+					alert(data.error);
+				}
+		    })
+        })
+        .keydown(function(e){
+			 var e = e || event,
+			 keycode = e.which || e.keyCode;
+			 if (keycode==13) {
+			  	$("#mod-pwd-submit").trigger("click");
+			 }
+		});
+	
+})
+</script>
+</body>
+</html>

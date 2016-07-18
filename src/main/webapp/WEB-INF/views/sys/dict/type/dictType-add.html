@@ -1,0 +1,43 @@
+<div class="row">
+	<div class="col-lg-5 col-sm-offset-2">
+    	<form class="form-horizontal" method="post" id="menu-form" action="${ctxPath}/sys/dict/add/saveType">
+    		 <input type="hidden" name="pid" value="${pid!0}" />
+    		@for(m in menus){
+    			<div class="form-group">
+    				<input type="hidden" name="sysDictType[${mLP.index}].id" class="form-control"  value="${m.id!}"/>
+    				<input type="text"  maxlength="64"  name="sysDictType[${mLP.index}].name" class="form-control"  value="${m.name!}"/>
+    				<input type="hidden"   name="sysDictType[${mLP.index}].oldName" class="form-control"  value="${m.name!}"/>
+    			</div>
+    		@}
+    		@for(var i = menus.~size;i < menus.~size + 5; i ++){
+    		
+    			<div class="form-group">
+    				<input type="hidden" name="sysDictType[${i + 1}].id" class="form-control"  value=""/>
+    				<input type="text"   maxlength="64"  name="sysDictType[${i + 1}].name" class="form-control"  value="" placeholder="请输入分类名称"/>
+    			</div>
+    		@}
+    		<div class="form-group">
+                 <button type="button" id="save-btn" class="btn btn-primary btn-save">保存</button>
+                 <button type="button"  data-mode='list-mng' data-url="${ctxPath}/sys/dict"  id="save-btn" class="btn btn-default btn-return">返回</button>
+            </div>
+    	</form>
+    </div>
+</div>	
+
+<script type="text/javascript">
+	$("#save-btn").click(function(){
+		$("#menu-form").ajaxSubmit(function(data){
+			if(data > 0){
+				msg.success("添加成功");
+				success();
+			}
+		})
+	})
+	
+	function success(){
+		$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/left/dictType"));
+		$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/addDictType"));
+	}
+	
+		
+</script>

@@ -21,8 +21,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.yunmel.commons.utils.StrUtils;
-import com.yunmel.commons.utils.TreeUtils;
 import com.yunmel.frame.common.utils.ValidUtils;
 import com.yunmel.frame.sys.model.SysDict;
 import com.yunmel.frame.sys.model.SysDictType;
@@ -30,6 +28,8 @@ import com.yunmel.frame.sys.service.SysDictService;
 import com.yunmel.frame.sys.service.SysDictTypeService;
 import com.yunmel.frame.sys.vo.SysDictTypeVO;
 import com.yunmel.frame.sys.vo.SysDictVO;
+import com.yunmel.syncretic.utils.biz.TreeUtils;
+import com.yunmel.syncretic.utils.commons.StrUtils;
 
 @Controller
 @RequestMapping("sys/dict")

@@ -1,0 +1,135 @@
+<div class="ibox float-e-margins ">
+    <div class="ibox-title">
+        <h5><i class="fa fa-th-list bigger-120"></i>  分类列表</h5>
+    </div>
+    <div  class="ibox-content">
+       <ul  id="tree">
+			<li aria-expanded="false" role="treeitem"
+				data-template="treebranch" class="tree-branch hide">
+				<div class="tree-branch-header">
+					<span class="tree-branch-name"> 
+						<i class="icon-folder yunmel-icon tree-plus"></i> 
+						<span class="tree-label"></span> 
+					</span>
+					<span class=>
+						<a href="javascript:void(0)" onclick="editMenu(this)">编辑</a>
+						<a href="javascript:void(0)" onclick="addChildren(this)">子分类</a>
+					</span>
+				</div>
+				<ul role="group" class="tree-branch-children"></ul>
+				<div role="alert" class="tree-loader hide">
+					<div class="tree-loading">
+						<i class="yunmel-icon fa fa-refresh fa-spin blue"></i>
+					</div>
+				</div>
+			</li>
+			<li role="treeitem" data-template="treeitem" class="tree-item hide">
+				<span class="tree-item-name">
+					<i class="icon-item yunmel-icon fa fa-times"></i> 
+					<span class="tree-label"></span> 
+				</span>
+				<span class="">
+					<a href="javascript:void(0)" onclick="editMenu(this)">编辑</a>
+					<a href="javascript:void(0)" onclick="addChildren(this)">子分类</a>
+					<a href="javascript:void(0)" onclick="deleteTree(this)">删除</a>
+				</span>
+			</li>
+		</ul>
+    </div>
+    <div class="ibox-footer">
+    	<a class="btn btn-primary btn-delete" onclick="deleteTrees()">删除</a>
+    	<a class="btn btn-warning btn-add" onclick="addRootMenu()">添加顶层分类</a>
+    </div>
+</div>
+
+<script type="text/javascript">
+	var $tree = null;
+	var id = null;
+	$(function(){
+		$tree = $("#tree");
+		$tree.yunmel_tree({
+			multiSelect: true,
+			selectable: true,
+	        data:${treeList}
+	    });
+	    
+	    $tree.tree('discloseAll');
+	});
+	
+	function setTitle(obj){
+		var name = [];
+		name.push(obj.name);
+		var pid = obj.parentId;
+		while(pid != null && pid != 0){
+			var $li = $tree.find("li[id="+pid+"]");
+			name.push($li.data("name"));
+			pid = $li.data("parentId");
+		}
+		$("#op-title").html(name.reverse().join('>'));
+	 }
+	
+	 function editMenu(obj){
+	 	$this = $(obj);
+		var data =  $this.closest("li").data();
+		$("#op-title").html("编辑");
+		$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/editType/"+data.id,{}));
+     }
+     
+     function addRootMenu(){
+     	$("#op-title").html("分类列表");
+    	 $("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/addDictType",{pid:0}));
+     }
+     
+     function addChildren(obj){
+		$this = $(obj);
+		var data =  $this.closest("li").data();
+		setTitle(data);
+		$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/addDictType",{pid:data.id}));
+     }
+     
+     
+     function deleteTree(obj){
+     	$this = $(obj);
+     	var data= $this.closest("li").data();
+     	msg.confirm("删除站内信",yunmel.helper.sprintf("您确定删除【%s】分类吗?",data.name),function(result){
+	     	if(result){
+	     		$.post("${ctxPath}/sys/dict/deleteType/"+data.id,function(data){
+	     			if(data > 0){
+	     				msg.success("删除成功!");
+	     				$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/left/dictType",{select:${pMenu.id!0}}));
+	     				$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/editType/"+data.id,{}));
+	     			}else{
+	     				msg.error("删除失败!");
+	     			}
+	     		})
+	     	}
+     	})
+     }
+     
+     function deleteTrees(){
+     	var items = $tree.tree("selectedItems");
+     	if(items.length <= 0){
+     		msg.error("请选择需要删除的分类!");
+     	}else{
+     		var ids = [];
+			for (var i = 0; i < items.length; i++) {
+				ids.push(items[i].id);
+			}
+     	}
+     	msg.confirm("删除站内信",yunmel.helper.sprintf("您确定要删除选中的%s条分类吗？",ids.length),function(result){
+     		if(result){
+	     		$.post("${ctxPath}/sys/dict/deletesType",{ids:ids},function(data){
+	     			if(data > 0){
+	     				msg.success("删除成功!");
+	     				$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/left/dictType"));
+	     				$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/dict/addDictType/"));
+	     			}else{
+	     				msg.error("删除失败!");
+	     			}
+	     		})
+     		}
+     	})
+     }
+	
+</script>
+

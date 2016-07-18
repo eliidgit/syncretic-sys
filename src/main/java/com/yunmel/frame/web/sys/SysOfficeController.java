@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
-import com.yunmel.commons.utils.StrUtils;
 import com.yunmel.frame.common.utils.ControllerUtils;
 import com.yunmel.frame.common.utils.ValidUtils;
 import com.yunmel.frame.sys.model.SysOffice;
 import com.yunmel.frame.sys.service.SysOfficeService;
+import com.yunmel.syncretic.utils.commons.StrUtils;
 
 /**
  * 

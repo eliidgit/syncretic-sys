@@ -1,0 +1,151 @@
+<div class="row">
+	<div class="col-lg-8">
+		<form class="form-horizontal" method="post" id="menu-form" action="${ctxPath}/sys/menu/edit/save">		
+			<input type="hidden" value="${menu.id!}" name="id"/>
+			<input type="hidden" value="${pMenus.parentIds!}" name="parentIds" />
+			<input type="hidden" value="${menu.parentIds!}" name="oldParentIds" />
+			<div class="form-group">
+					<label  class="col-lg-2 control-label">菜单名称</label>
+					<div class="col-lg-9">
+						<input name="name"  class="form-control" value="${menu.name!}" placeholder="请输入菜单名称">
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">菜单链接</label>
+					<div class="col-lg-9">
+						<div class="input-group ">
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default disabled">${ctxPath!}/</button>
+							</span>
+							<input name="url" class="form-control" value="${menu.url!}" placeholder="请输入菜单链接">
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">父级菜单</label>
+					<div class="col-lg-9">
+						<#treeselect id="selectParent" data="${treeList!}" title="请选择父菜单" modelNameValue="${pMenu.name!}"
+							modelIdValue="${pMenu.id!0}" selectIds="${pMenu.id!}" excludeExpr="data-type='1'"  curId="${menu.id!}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">菜单类型</label>
+					<div class="col-lg-9">
+						<div class="radio">
+							<label class=" form-normal">
+								<input name="type" type="radio" value="0"/>
+								<span class="lbl"> 菜单资源 </span>
+							</label>
+							<label class=" form-normal ">
+								<input name="type" type="radio" value="1"/>
+								<span class="lbl"> 按钮资源</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">权限类型</label>
+					<div class="col-lg-9">
+						<div class="radio">
+							<label class=" form-normal">
+								<input name="common" type="radio"  value="0"/>
+								<span class="lbl"> 权限资源 </span>
+							</label>
+							<label class=" form-normal ">
+								<input name="common" type="radio" value="1"/>
+								<span class="lbl"> 公共资源</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">菜单图标</label>
+					<div class="col-lg-9">
+						<#iconselect value="${menu.icon!}"/>
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">菜单序号</label>
+					<div class="col-lg-9">
+						<input class="form-control"
+						id="id_g" type="text" name="sort" value="${menu.sort!1}"
+						onkeyup="this.value=this.value.replace(/\D/g,'')" 
+						onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">使用状态</label>
+					<div class="col-lg-9">
+						<div class="radio">
+							<label class="form-normal">
+								<input name="status" type="radio" value="1"/>
+								<span class="lbl"> 启用 </span>
+							</label>
+							<label class="form-normal ">
+								<input name="status" type="radio"  value="0"/>
+								<span class="lbl"> 禁用</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<label  class="col-lg-2 control-label">菜单描述</label>
+					<div class="col-lg-9">
+						<textarea name="description" class="autosize-transition form-control "
+						style="resize: none;">${menu.description!}</textarea>	
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-offset-2 col-lg-10">
+                   		<button type="submit" id="save-btn" class="btn btn-primary btn-save">保存</button>
+                   		<button type="button"  data-mode='list-mng' data-url="${ctxPath}/sys/menu"  id="save-btn" class="btn btn-default btn-return">返回</button>
+                    </div>
+            	</div>
+			</div>
+		</form>
+	</div>
+</div>	
+
+
+<script type="text/javascript">
+	$(function(){
+	   //初始化单选
+	   var type='${menu.type!0}',
+	   common = '${menu.common!0}',
+	   status = '${menu.status!1}';
+	   $("input:radio[name=type][value="+type+"]")[0].checked=true;
+	   $("input:radio[name=common][value='"+common+"']")[0].checked=true;
+	   $("input:radio[name=status][value="+status+"]")[0].checked=true;
+	   
+	   
+	   $('#menu-form')
+        .bootstrapValidator({
+            fields: {
+                name: {
+                    message: '菜单名称没有校验',
+                    validators: {
+                        notEmpty: {
+                            message: '菜单名称不能为空'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 64,
+                            message: '菜单名称不能超过64个字符'
+                        }
+                    }
+                }
+            }
+        })
+        .on('success.form.bv', function(e) {
+            e.preventDefault();
+            $(e.target).ajaxSubmit(function(data){
+				if(data > 0){
+					msg.success("修改成功");
+					$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/left/menu",{select:"${pMenu.id!0}"}));
+				}else{
+					msg.error("修改失败");
+				}
+		    })
+        });
+	});
+</script>

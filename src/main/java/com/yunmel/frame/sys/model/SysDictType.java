@@ -11,7 +11,7 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({"unused"})
 @Table(name = "sys_dict_type")
 public class SysDictType extends BaseEntity {
-
+  private static final long serialVersionUID = 4580287349500654559L;
   private String parentId; //
   private String parentIds; // 所有父级编号
   private String code; // 区域编码

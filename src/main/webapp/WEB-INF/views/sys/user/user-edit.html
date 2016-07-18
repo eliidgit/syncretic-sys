@@ -1,0 +1,124 @@
+<section class="content">
+	<div class="row">
+		<form class="form-horizontal" method="post" id="office-user-form" action="${ctxPath}/sys/user/save">		
+			<input type="hidden" name="id" value="${sysUser.id!}">
+			@var myUnit = sysUser.officeId;
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">用户名</label>
+				<div class="col-lg-9">
+					<input name="username"  class="form-control"  value="${sysUser.username!}" disabled>
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">姓名</label>
+				<div class="col-lg-9">
+					<input name="name"  class="form-control"  value="${sysUser.name!}" placeholder="请输入姓名">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">所属单位</label>
+				<div class="col-lg-9">
+					<#select name="unitId" id="unitId-form" placeholder="请选择单位类型">
+						<option value=""></option>
+						@for(item in sysOffices){
+							<option value="${item.id!}" ${decode(item.id,myUnit,'selected','')}>${item.name!}</option>
+						@}
+					</#select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label" >邮箱</label>
+				<div class="col-lg-9">
+					<input name="email"  class="form-control" value="${sysUser.email!}" placeholder="请输入邮箱">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">手机</label>
+				<div class="col-lg-9">
+					<input name="mobile"  class="form-control" value="${sysUser.mobile!}" placeholder="请输入手机">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">电话</label>
+				<div class="col-lg-9">
+					<input name="phone"  class="form-control" value="${sysUser.phone!}" placeholder="请输入电话号码">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">角色</label>
+				<div class="col-lg-9">
+					<select name="roleIds" multiple class="chosen-select tag-input-style" id="user-role-update" data-placeholder="选择角色">
+						@for(entry in rolesMap){
+							@var key = entry.key,role=entry.value;
+							<option value="${role.id!}" 
+								@if(!isEmpty(findUserRoleMap[key])){
+									selected
+								@}
+							>
+							${role.name!}
+							@var sostr = office.getOfficeStrByOfficeId(role.officeId);
+							@if(!isEmpty(sostr)){
+								&nbsp;(${sostr})
+							@}
+							</option>
+						@}
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">备注</label>
+				<div class="col-lg-9">
+					<textarea name="remarks" class="autosize-transition form-control "
+					style="resize: none;">${sysUser.remarks!}</textarea>
+				</div>
+			</div>
+		</form>
+	</div>
+</section>
+
+
+<script type="text/javascript">
+	$(function(){
+	   
+	   $('#office-user-form')
+        .bootstrapValidator({
+            fields: {
+                name: {
+                    message: '姓名没有校验',
+                    validators: {
+                        notEmpty: {
+                            message: '姓名不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 100,
+                            message: '姓名至少两个字符'
+                        }
+                    }
+                },
+                email: {
+	               validators: {
+	                   emailAddress: {
+	                       message: '请输入正确的电子邮箱地址'
+	                   }
+	               }
+	           }
+            }
+        })
+        .on('success.form.bv', function(e) {
+            e.preventDefault();
+            $(e.target).ajaxSubmit(function(data){
+				if(data > 0){
+					msg.success("保存成功");
+					query();
+				}
+				BootstrapDialog.closeAll();
+		    })
+        });
+	});
+	
+	function saveBtnClick(){
+		 $('#office-user-form').data('bootstrapValidator').validate();
+	}
+	$("#user-role-update").chosen({width: "100%",search_contains: true}); 
+</script>

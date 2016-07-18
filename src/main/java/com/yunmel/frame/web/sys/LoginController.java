@@ -19,13 +19,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yunmel.commons.controller.BaseController;
-import com.yunmel.commons.utils.EncryptUtils;
-import com.yunmel.commons.utils.StrUtils;
 import com.yunmel.frame.common.utils.SysUserUtils;
 import com.yunmel.frame.sys.model.SysUser;
 import com.yunmel.frame.sys.service.SysConfigService;
+import com.yunmel.syncretic.core.BaseController;
+import com.yunmel.syncretic.utils.commons.StrUtils;
+import com.yunmel.syncretic.utils.encr.EncryptUtils;
 
+/**
+ * 
+ * @description 用户登陆
+ *
+ * @author xuyq - chainisit@126.com
+ * @since 1.0 - 2016年7月18日
+ */
 @Controller
 public class LoginController extends BaseController {
   private Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -85,7 +92,7 @@ public class LoginController extends BaseController {
    * @param password 密码
    * @return
    */
-  @RequestMapping(value = "login", method = RequestMethod.POST)
+  @RequestMapping(value = "login/submit", method = RequestMethod.POST)
   public @ResponseBody Map<String, Object> loginPost(String username, String returnUrl,
       String password, String code) {
     Map<String, Object> msg = new HashMap<String, Object>();

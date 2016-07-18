@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
-import com.yunmel.commons.utils.StrUtils;
 import com.yunmel.frame.sys.model.SysLog;
 import com.yunmel.frame.sys.service.SysDictService;
 import com.yunmel.frame.sys.service.SysLogService;
+import com.yunmel.syncretic.utils.commons.StrUtils;
 
 @Controller
 @RequestMapping("sys/log")

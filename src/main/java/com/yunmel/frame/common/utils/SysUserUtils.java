@@ -19,8 +19,6 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
-import com.yunmel.commons.service.RedisService;
-import com.yunmel.commons.utils.TreeUtils;
 import com.yunmel.frame.common.spring.SpringContextHolder;
 import com.yunmel.frame.consts.Constant;
 import com.yunmel.frame.consts.RedisKey;
@@ -32,6 +30,8 @@ import com.yunmel.frame.sys.service.SysMenuService;
 import com.yunmel.frame.sys.service.SysOfficeService;
 import com.yunmel.frame.sys.service.SysRoleService;
 import com.yunmel.frame.sys.service.SysUserService;
+import com.yunmel.syncretic.component.RedisService;
+import com.yunmel.syncretic.utils.biz.TreeUtils;
 
 /**
  * @ClassName:SysUserUtils
@@ -79,6 +79,7 @@ public class SysUserUtils {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static List<String> getOnlineUserId(String id) {
     String json = redisService.get(RedisKey.ONLINE_USER_LIST);
     List<String> list = Lists.newArrayList();
@@ -94,6 +95,7 @@ public class SysUserUtils {
   /**
    * 获取在线用户
    */
+  @SuppressWarnings("unchecked")
   public static List<SysUser> getOnlineUser() {
     Map<String, SysUser> sysUser = Maps.newHashMap();
     try {
@@ -159,8 +161,6 @@ public class SysUserUtils {
     return null;
   }
 
-
-
   /**
    * 得到当前session
    */
@@ -199,7 +199,6 @@ public class SysUserUtils {
     }
   }
 
-
   public static void updateUserCache() {
     try {
       SysUser user = getCacheLoginUser();
@@ -217,7 +216,6 @@ public class SysUserUtils {
       logger.error("redis 更新缓存用户缓存失败", e);
     }
   }
-
 
   /**
    * 用户持有的数据范围,包含数据范围小的
@@ -277,7 +275,6 @@ public class SysUserUtils {
     }
     return userOffices;
   }
-
 
   /**
    * 数据范围过滤
@@ -368,7 +365,6 @@ public class SysUserUtils {
           sessionTime);
     }
   }
-
 
   // 清空和角色相关的缓存数据
   public static void clearUserDataScopeOffice() {

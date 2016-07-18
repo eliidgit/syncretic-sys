@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
-import com.yunmel.commons.utils.TreeUtils;
 import com.yunmel.frame.common.utils.ControllerUtils;
 import com.yunmel.frame.common.utils.SysUserUtils;
 import com.yunmel.frame.common.utils.ValidUtils;
@@ -31,6 +30,7 @@ import com.yunmel.frame.sys.service.SysOfficeService;
 import com.yunmel.frame.sys.service.SysRoleService;
 import com.yunmel.frame.sys.service.SysUserService;
 import com.yunmel.frame.sys.vo.SysUserVO;
+import com.yunmel.syncretic.utils.biz.TreeUtils;
 
 @Controller
 @RequestMapping("sys/user")

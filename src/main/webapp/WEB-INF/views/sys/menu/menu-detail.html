@@ -1,0 +1,85 @@
+<div class="wrapper-content"> 
+	<div class="row">
+		<div class="col-lg-12">
+			<table  class="table table-bordered table-striped  width-100">
+				<thead>
+					<th width="100">属性</th>
+					<th>值</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>ID</td>
+						<td>${menu.id!}</td>
+					</tr>
+					<tr>
+						<td>名称</td>
+						<td>${menu.name!}</td>
+					</tr>
+					<tr>
+						<td>url</td>
+						<td>${menu.url!}</td>
+					</tr>
+					<tr>
+						<td>权限码(code)</td>
+						<td>${menu.code!}</td>
+					</tr>
+					<tr>
+						<td>权限位(pos)</td>
+						<td>${menu.pos!}</td>
+					</tr>
+					<tr>
+						<td>资源类型</td>
+						<td>${decode(menu.type,'0','菜单资源','按钮资源')}</td>
+					</div>
+					<tr>
+						<td>权限类型</td>
+						<td>${decode(menu.common,'0','权限','公共')}</td>
+					</tr>
+					<tr>
+						<td>图标</div>
+						<td>
+							<i class="ace-icon ${menu.icon!} blue bigger-120"></i>
+						</tr>
+					</tr>
+					<tr>
+						<td>排序号</div>
+						<td>${menu.sort!}</td>
+					</tr>
+					<tr>
+						<td>状态</div>
+						<td>${decode(menu.status!,'0','正常','禁用')}</td>
+					</tr>
+					<tr>
+						<td>父级ID</div>
+						<td>${pMenu.id!}</td>
+					</tr>
+					<tr>
+						<td>父级名称</div>
+						<td>${pMenu.name!}</td>
+					</tr>
+					<tr>
+						<td>创建者</div>
+						<td>${menu.createBy!}</td>
+					</tr>
+					<tr>
+						<td>创建时间</div>
+						<td>${menu.createDate!}</td>
+					</tr>
+					<tr>
+						<td>更新者</div>
+						<td>${menu.updateBy!}</td>
+					</tr>
+					<tr>
+						<td>更新时间</div>
+						<td>${menu.updateDate!}</td>
+					</div>
+					<tr>
+						<td>描述</td>
+						<td>${menu.description!}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+</div>

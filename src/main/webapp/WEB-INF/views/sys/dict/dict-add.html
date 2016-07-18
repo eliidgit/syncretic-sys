@@ -1,0 +1,70 @@
+<div class="page-content wrapper-content no-padding-bottom">
+	<div class="ibox float-e-margins no-padding-bottom no-margin-bottom" style="position: fixed;width:280px;" id="tree-box">
+         <div class="ibox-title">
+             <h5>分类列表</h5>
+         </div>
+         <div  class="ibox-content">
+            <ul  id="tree"></ul>
+         </div>
+         <div class="ibox-footer">
+         	
+         </div>
+     </div>
+     
+	<div class="row" style="margin-left: 290px;"></div>
+
+<script src="${ctxPath}/static/js/plugins/fuelux/fuelux.tree.js"></script>
+<script src="${ctxPath}/static/js/yunmel/yunmel.treeview.js"></script>
+<script type="text/javascript">
+	var dict_type_id = 0;
+	var resizeTimer = null;
+	var y_scroll = null;
+	
+	$(function() {
+		$tree = $("#tree");
+		
+		$tree.yunmel_tree({
+	        data:${treeList}
+	    });
+	    
+	    $tree.on("click.fu.tree",function(e){
+	    	var obj = $("#tree").tree("selectedItems");
+	   		if(obj != undefined && obj.length > 0 && obj[0].children.length==0){
+	   			dict_type_id = obj[0].id;
+	   			$.post("${ctxPath}/sys/dict/dict-add-page/"+dict_type_id,function(data){
+	   				$(".row").html(data);
+	   			},"text");
+	   		}
+	   		
+	   		if(y_scroll != null){
+	   			$("#tree-box .ibox-content").trigger("mouseenter");
+	   		}
+	    });
+	    
+	    setTreeBoxHeight();
+    	window.onresize = function(){  
+		  if(resizeTimer) clearTimeout(resizeTimer);  
+		  resizeTimer = setTimeout("doResize()",300);  
+		}  
+	});
+	
+	function setTreeBoxHeight(){
+		var h=  yunmel.helper.getCenterHeight() - $(".page-content").css("padding-top").replace("px","")*1;
+		$("#tree-box").height(h).find(".ibox-content").height(h - 120);
+		if(y_scroll == null){
+			y_scroll = $("#tree-box .ibox-content").yunmel_scroll({
+			size:h-120,
+			mouseWheelLock: true
+			});
+			y_scroll = y_scroll.data('yunmel_scroll');
+		}else{
+			y_scroll.update({size:h-120})
+		}
+	}
+
+	function doResize(){  
+	 	setTreeBoxHeight();
+	}  
+</script>
+	
+	

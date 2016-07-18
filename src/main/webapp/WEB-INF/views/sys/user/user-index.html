@@ -1,0 +1,170 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h3>用户管理 </h3>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+       <div class="col-xs-12">
+         <div class="box" style="background-color: #fff;">
+           <div class="box-header">
+            	<form class="form-inline" id="search-form" method="post">
+          			<div class="pull-left">
+          				<div class="form-group">
+          					<input type="text" name="username" style="width: 200px" class="form-control" placeholder="请输入登录名"/>
+          				</div>
+          				<div class="form-group">
+          					<input type="text" name="name" style="width: 200px" class="form-control" placeholder="请输入用户名"/>
+          				</div>
+          				<button title="检索" type="button" onclick="query()"
+							class="btn btn-default">
+							<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+						</button>
+          			</div>
+           			<div class="pull-right">
+						<a class="btn btn-default btn-add" data-mode="add" 
+							data-url="${ctxPath}/sys/user/add/dialog" data-title="添加用户">添加</a>
+           			</div>
+               	</form>
+           </div>
+           <!-- /.box-header -->
+           <div class="box-body">
+	           	<table id="table" >
+				     <thead>
+					     <tr>
+							 <th data-field="state" data-checkbox="true"></th>
+							 <th data-field="name" data-formatter="frmDetail"  data-sortable="true" >姓名</th>
+							 <th data-field="sex" data-formatter="frmSex"  data-sortable="true" >性别</th>
+							 <th data-field="username" data-formatter="frmDetail" data-sortable="true" >登录名</th>
+							 <th data-field="officename"   data-sortable="true" >单位</th>
+							 <th data-field="mobile"   data-sortable="true" >手机</th>
+							 <th data-field="status" data-formatter="frmUseStaus" data-align="center" data-sortable="true" >使用状态</th>
+							 <th data-field="id" data-formatter="frmOp" data-align="center" data-width="60">操作</th>
+					     </tr>
+				     </thead>
+			 	</table>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<div id="opBtn" class="hidden">
+	<div class="action-buttons">
+		<a href="javascript:void(0)" 
+			data-mode="edit" 
+			data-width='50%'
+			data-title="【{name}】编辑"
+			data-url="${ctxPath}/sys/user/edit/dialog"
+			data-data="{id:'{id}'}"
+			data-callback="query()"
+			title="编辑" data-toggle="tooltip" data-placement="left"
+			class="green">
+			<i class="fa fa-pencil bigger-130"></i>
+		</a>
+		<a href="javascript:void(0)" 
+			data-mode="sop" 
+			data-op="删除"
+			data-name="用户"
+			data-url="${ctxPath}/sys/user/delete/{id}" 
+			title="删除" data-toggle="tooltip" data-placement="left"
+			class="red"
+			data-callback="query()"
+			><i class="fa fa-trash-o bigger-130"></i>
+		</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+  	var $form = null;	
+	var $table = null;
+	var opBtnHtml = null;
+	
+	$(function(){
+		$table = $("#table");
+		$form = $("#search-form");
+		opBtnHtml = $("#opBtn").html();
+    	$table.bootstrapTable({
+	    	paginationFixed:true,
+	    	sortName:'id',
+	    	controlToolbar:'#toolbar',
+	    	url:"${ctxPath}/sys/user/list?"+$("#search-form").serialize(),
+	    	onLoadSuccess:function(){
+	    		//msg.success("用户数据加载成功!");
+	    	}
+	    });
+	});
+	
+	function query(){
+		$table.bootstrapTable("refresh",{url:"${ctxPath}/sys/user/list?"+$("#search-form").serialize()});
+	}
+	
+	function frmOp(value,row){
+		if(row.username!=admin){
+	    	return opBtnHtml
+	    	.replace(new RegExp("{id}", "g"), row.id)
+	    	.replace(new RegExp("{pid}", "g"), row.pid)
+	    	.replace(new RegExp("{name}", "g"), row.name);
+	    }else{
+	    	return "";
+	    }
+    }
+	
+	function frmDetail(value,row){
+    	var html = [];
+    	html.push('<a href="javascript:;"',
+						'data-title="【'+value+'】详情" data-width="40%" data-mode="detail"',
+						'data-url="${ctxPath}/sys/user/detail/'+row.id+'"',
+						'>',
+						value,
+					'</a>');
+		return html.join(" ");
+    }
+	
+	function frmSex(value,row){
+		if(value==1){
+			return "男";
+		}else{
+			return "女";
+		}
+	}
+	
+	var admin = "${admin!'admin'}"
+	function frmUseStaus(value,row){
+    	if(row.username!=admin){
+    		if(value == 1){
+    			return '<a href="javascript:void(0)" title="双击修改状态" data-toggle="tooltip" data-placement="left" ondblclick="editStaus(\''+row.id+'\',\''+value+'\')">正常<a>'
+    		}else if(value == 0){
+    			return '<a href="javascript:void(0)" title="双击修改状态" data-toggle="tooltip" data-placement="left" ondblclick="editStaus(\''+row.id+'\',\''+value+'\')"><span class="red">禁用</span><a>'
+    		}else if(value == 3){
+    			return '<a href="javascript:void(0)" title="双击修改状态" data-toggle="tooltip" data-placement="left" ondblclick="editStaus(\''+row.id+'\',\''+value+'\')"><span class="red">锁定</span><a>'
+    		}
+    	}else{
+    		return "<span class='red'>正常</span>"
+    	}
+    }
+	
+	function editStaus(id,status){
+     	if(status == 1){//正常改为禁用
+     		status = 0;
+     	}else{//禁用和锁定改为正常
+     		status = 1;
+     	}
+    	$.post("${ctxPath}/sys/user/update/status/"+id,{status:status},function(data){
+    		if(data > 0){
+				$table.bootstrapTable("updateByUniqueId",{id:id, row:{status:status}});
+				$('*').tooltip('hide')
+    			msg.success("修改成功");
+    		}else{
+    			msg.error("修改失败");
+    		}
+    	},"json");
+    }
+	
+	function doResize(){  
+	 	$table.bootstrapTable("refresh");
+	}
+	
+</script>
+

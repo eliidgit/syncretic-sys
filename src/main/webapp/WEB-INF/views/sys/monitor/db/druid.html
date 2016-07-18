@@ -1,0 +1,22 @@
+<div class="page-content wrapper-content no-padding no-margin">
+   <iframe id='druid-iframe' src="${ctxPath}/druid" width="100%" height="100%" frameborder="0"></iframe>
+</div>	
+
+<script type='text/javascript'>
+	$(function(){
+		reSize();
+	})
+	
+	window.onresize = function(){
+		reSize();
+	}
+	
+	function reSize(){
+		$("#druid-iframe").height(getCenterHeight() - 5);
+	}
+	
+	function getCenterHeight(){
+		return $(window).height() - $("#navbar").outerHeight();
+	}
+</script>
+

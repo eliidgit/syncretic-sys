@@ -11,8 +11,8 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({ "unused"})
 @Table(name="sys_config")
 public class SysConfig extends BaseEntity{
-	 
-	private String label;    //  
+  private static final long serialVersionUID = 1L;
+  private String label;    //  
 	private String value;    //  
 	private String delFlag;    //  
 	private String createBy;    //创建者  

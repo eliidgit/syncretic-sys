@@ -10,8 +10,8 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({ "unused"})
 @Table(name="sys_dict")
 public class SysDict extends BaseEntity{
- 
-	private String label;    //标签名  
+  private static final long serialVersionUID = 137642201568728903L;
+  private String label;    //标签名  
 	private String value;    //数据值  
 	private String type;    //类型  
 	private String description;    //描述  

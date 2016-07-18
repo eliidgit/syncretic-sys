@@ -145,15 +145,15 @@ public class SysDictService extends BaseService<SysDict> {
 		return sysDictMapper.findPageInfo(params);
 	}
 	
-	private List<SysDict> getAllEnable() {
-		SysDict sd = new SysDict();
-		sd.setStatus(Constant.SYSTEM_COMMON_ENABLE);
-		return this.select(sd,"sort");
-	}
+//	private List<SysDict> getAllEnable() {
+//		SysDict sd = new SysDict();
+//		sd.setStatus(Constant.SYSTEM_COMMON_ENABLE);
+//		return this.select(sd,"sort");
+//	}
 
 	public void putRedis() {
 		try{
-			List<SysDict> sds = getAllEnable();
+//			List<SysDict> sds = getAllEnable();
 			List<SysDict> dictList = this.select(new SysDict());
 			Multimap<String, SysDict> multimap = ArrayListMultimap.create();
 			for(SysDict dict : dictList){

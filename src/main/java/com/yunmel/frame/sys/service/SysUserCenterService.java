@@ -7,13 +7,13 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import com.yunmel.commons.service.BaseService;
-import com.yunmel.commons.utils.IPUtils;
-import com.yunmel.commons.utils.PasswordEncoders;
 import com.yunmel.frame.common.utils.SysUserUtils;
 import com.yunmel.frame.sys.function.OfficeFunctions;
 import com.yunmel.frame.sys.model.SysOffice;
 import com.yunmel.frame.sys.model.SysUser;
+import com.yunmel.syncretic.core.BaseService;
+import com.yunmel.syncretic.utils.encr.PasswordEncoders;
+import com.yunmel.syncretic.utils.net.IPUtils;
 
 @Service
 public class SysUserCenterService extends BaseService<SysUser> {

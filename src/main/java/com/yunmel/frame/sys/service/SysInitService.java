@@ -39,6 +39,7 @@ public class SysInitService{
 		sysDictService.putRedis();
 		sysRoleService.putRedis();
 		sysConfigService.putRedis();
+		LOG.info("缓存初始化成功.");
 	} 
 	
 }

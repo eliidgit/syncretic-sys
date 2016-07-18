@@ -11,7 +11,7 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({"unused"})
 @Table(name = "sys_menu")
 public class SysMenu extends BaseEntity {
-
+  private static final long serialVersionUID = 1852751959388262604L;
   private String name; // 资源名称
   private String common; // 是否是公共资源(0.不是 1.是)
   private String icon; // 图标

@@ -11,7 +11,7 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({"unused"})
 @Table(name = "sys_area")
 public class SysArea extends BaseEntity {
-
+  private static final long serialVersionUID = -1703602593724217674L;
   private String parentId; //
   private String parentIds; // 所有父级编号
   private String code; // 区域编码

@@ -15,8 +15,6 @@ import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.yunmel.commons.service.BaseService;
-import com.yunmel.commons.service.RedisService;
 import com.yunmel.frame.common.utils.SysUserUtils;
 import com.yunmel.frame.consts.Constant;
 import com.yunmel.frame.consts.RedisKey;
@@ -24,6 +22,8 @@ import com.yunmel.frame.sys.mapper.SysRoleMapper;
 import com.yunmel.frame.sys.model.SysMenu;
 import com.yunmel.frame.sys.model.SysRole;
 import com.yunmel.frame.sys.model.SysUser;
+import com.yunmel.syncretic.component.RedisService;
+import com.yunmel.syncretic.core.BaseService;
 
 /**
  * 

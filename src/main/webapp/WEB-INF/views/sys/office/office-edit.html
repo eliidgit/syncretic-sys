@@ -1,0 +1,135 @@
+<div class="row">
+	<div class="col-lg-8">
+		<form class="form-horizontal" method="post" id="menu-form" action="${ctxPath}/sys/office/save">		
+			<input type="hidden" value="${sysOffice.id!}" name="id"/>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">部门名称</label>
+				<div class="col-lg-9">
+					<input name="name"  class="form-control" value="${sysOffice.name!}" placeholder="请输入部门名称">
+				</div>
+			</div>
+			<!-- <div class="form-group">
+				<label  class="col-lg-2 control-label">父级部门</label>
+				<div class="col-lg-9">
+					<#treeselect id="selectParent" data="${treeList!}" title="请选择父部门" expandAll="true" 
+				    	modelNameValue="${pSysOffice.name!}" valueColumn="id" 
+						modelIdValue="${pSysOffice.id!}" selectIds="${pSysOffice.id!}"
+						modelId="parentId"  curId="${pSysOffice.id!}" />
+				</div>
+			</div> -->
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">地址</label>
+				<div class="col-lg-9">
+					<input name="address"  class="form-control" value="${sysOffice.address!}" placeholder="请输入联系地址">
+				</div>
+			</div>
+			<!-- <div class="form-group">
+				<label  class="col-lg-2 control-label">归属地区</label>
+				<div class="col-lg-9">
+					<input name="areaId"  class="form-control" value="${sysOffice.areaId!}" placeholder="请输入联系地址">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">地区编码</label>
+				<div class="col-lg-9">
+					<input name="code"  class="form-control" value="${sysOffice.code!}" placeholder="请输入地区编码">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">邮箱</label>
+				<div class="col-lg-9">
+					<input name="email"  class="form-control" value="${sysOffice.email!}" placeholder="请输入邮箱">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">传真</label>
+				<div class="col-lg-9">
+					<input name="fax"  class="form-control" value="${sysOffice.fax!}" placeholder="请输入传真">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">机构等级</label>
+				<div class="col-lg-9">
+					<input name="grade"  class="form-control" value="${sysOffice.grade!}" placeholder="请输入传真">
+				</div>
+			</div> -->
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">联系人</label>
+				<div class="col-lg-9">
+					<input name="master"  class="form-control" value="${sysOffice.master!}" placeholder="请输入负责人">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">电话</label>
+				<div class="col-lg-9">
+					<input name="phone"  class="form-control" value="${sysOffice.phone!}" placeholder="请输入电话">
+				</div>
+			</div>
+			<!-- <div class="form-group">
+				<label  class="col-lg-2 control-label">机构类型</label>
+				<div class="col-lg-9">
+					<input name="type"  class="form-control" value="${sysOffice.type!}" placeholder="请输入机构类型">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">邮政编码</label>
+				<div class="col-lg-9">
+					<input name="zipCode"  class="form-control" value="${sysOffice.zipCode!}" placeholder="请输入邮政编码">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">图标</label>
+				<div class="col-lg-9">
+					<input name="icon"  class="form-control" value="${sysOffice.icon!}" placeholder="请输入图标">
+				</div>
+			</div> -->
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">备注</label>
+				<div class="col-lg-9">
+					<textarea name="remarks" class="autosize-transition form-control "
+					style="resize: none;">${sysOffice.remarks!}</textarea>	
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-lg-offset-2 col-lg-10">
+                  		<button type="submit" id="save-btn" class="btn btn-primary btn-save">保存</button>
+                  		<button type="button"  data-mode='list-mng' data-url="${ctxPath}/sys/office"  id="return-btn" class="btn btn-default btn-return">返回</button>
+                   </div>
+           	</div>
+		</form>
+	</div>
+</div>	
+
+
+<script type="text/javascript">
+	$(function(){
+	   
+	   $('#menu-form')
+        .bootstrapValidator({
+            fields: {
+                name: {
+                    message: '分类名称没有校验',
+                    validators: {
+                        notEmpty: {
+                            message: '分类名称不能为空'
+                        },
+                        stringLength: {
+                            min: 1,
+                            max: 64,
+                            message: '分类名称不能超过64个字符'
+                        }
+                    }
+                }
+            }
+        })
+        .on('success.form.bv', function(e) {
+            e.preventDefault();
+            $(e.target).ajaxSubmit(function(data){
+				if(data > 0){
+					msg.success("修改成功");
+					$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/office/left/office",{select:0}));
+				}
+		    })
+        });
+	});
+</script>

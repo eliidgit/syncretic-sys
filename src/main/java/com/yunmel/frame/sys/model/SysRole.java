@@ -11,7 +11,7 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({"unused"})
 @Table(name = "sys_role")
 public class SysRole extends BaseEntity {
-  
+  private static final long serialVersionUID = 7520520643351399105L;
   private String officeId; //
   private String name; // 角色名称
   private String dataScope; // 数据范围

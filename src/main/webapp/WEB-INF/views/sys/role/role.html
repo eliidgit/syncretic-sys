@@ -1,0 +1,109 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h3>角色管理 </h3>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+       <div class="col-xs-12">
+         <div class="box" style="background-color: #fff;">
+           <div class="box-header">
+              <div class="pull-right">
+                <a href="javascript:void(0)" 
+                  data-mode="edit" 
+                  data-width='50%'
+                  data-title="添加角色"
+                  data-url="${ctxPath}/sys/role/add/dialog"
+                  class="btn btn-primary btn-add btn-sm">
+                  	添加角色
+                </a>
+              </div>
+           </div>
+           <!-- /.box-header -->
+           <div class="box-body">
+              <table class="table table-bordered">
+                <thead>
+                  <td width="120">角色名称</td>
+                  <td width="150">角色描述</td>
+                  <td>人员列表</td>
+                  <td width="150">操作</td>             
+                </thead>
+                <tbody>
+                @for(r in roles){
+                  <tr>
+                    <td>${r.name!}</td>
+                    <td>${r.remarks!}</td>
+                    <td>${r.user!}</td>
+                    <td>
+                      <div class="action-buttons">
+                        <a href="javascript:void(0)" 
+                          data-mode="edit" 
+                          data-width='50%'
+                          data-title="【${r.name!}】编辑"
+                          data-url="${ctxPath}/sys/role/edit/dialog"
+                          data-data="{id:'${r.id!}'}"
+                          title="编辑" data-toggle="tooltip" data-placement="left"
+                          class="green">
+                          <i class="fa fa-pencil bigger-130"></i>
+                        </a>
+                        <a href="javascript:void(0)" 
+                          data-mode="edit" 
+                          data-size='size-wide'
+                          data-width='50%'
+                          data-title="【${r.name!}】人员分配"
+                          data-url="${ctxPath}/sys/role/user/dialog"
+                          data-data="{id:'${r.id!}'}"
+                          title="人员分配" data-toggle="tooltip" data-placement="left"
+                          class="green">
+                          <i class="fa fa-user bigger-130"></i>
+                        </a>
+                        <a href="javascript:void(0)" 
+                          data-mode="edit" 
+                          data-width='50%'
+                          data-size='size-wide'
+                          data-title="【${r.name!}】菜单权限"
+                          data-url="${ctxPath}/sys/role/menu/dialog"
+                          data-data="{id:'${r.id!}'}"
+                          title="菜单权限" data-toggle="tooltip" data-placement="left"
+                          class="green">
+                          <i class="fa fa-check-square  bigger-130"></i>
+                        </a>
+                        <a href="javascript:void(0)" 
+                          data-mode="edit" 
+                          data-width='50%'
+                          data-title="【${r.name!}】数据权限"
+                          data-url="${ctxPath}/sys/role/data/dialog"
+                          data-data="{id:'${r.id!}'}"
+                          title="数据权限" data-toggle="tooltip" data-placement="left"
+                          class="green">
+                          <i class="fa fa-database bigger-130"></i>
+                        </a>
+                        <a href="javascript:void(0)" 
+                          data-mode="sop" 
+                          data-op="删除"
+                          data-name="角色"
+                          data-callback="query()"
+                          data-url="${ctxPath}/sys/role/delete/${r.id!}" 
+                          title="删除" data-toggle="tooltip" data-placement="left"
+                          class="red"
+                          ><i class="fa fa-trash-o bigger-130"></i>
+                        </a>
+                      </div>  
+                    </td>
+                  </tr>
+                  @}
+                </tbody>
+              </table>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+
+<script type="text/javascript">
+  function query(){
+    $curmenu.trigger('click');
+  }
+</script>
+
+

@@ -1,0 +1,168 @@
+<div class="col-lg-12">
+	<form class="form-horizontal" method="post" id="stu-form" action="${ctxPath}/sys/dict/save/dict-add">
+		<div class="ibox">
+			<div class="ibox-title form-title">
+	                   <h5 id="table-title">批量添加字典</h5>
+	              </div>    
+	              <div class="ibox-content">
+	              	<div class="form-group">
+					<label  class="col-lg-1 control-label">所属分类</label>
+					<div class="col-lg-5">
+						 <input type="hidden" class="form-control" name="type" value="${sysDictType.code!}">
+						 <label  class="control-label">${sysDictType.name!}</label>
+					</div>
+				</div>
+	              	<hr/>
+	              	<div class="form-group">
+	              		<div class="col-xs-3">
+	              			<input type="text" class="form-control" name="sysDict[0].label" placeholder="标签">
+	              		</div>
+	              		<div class="col-xs-3">
+	              			<input type="text" class="form-control" name="sysDict[0].value" placeholder="键值">
+	              		</div>
+	              		
+	              		<div class="col-xs-2">
+	              			<input class="form-control"
+							id="id_g" type="text" name="sysDict[0].sort"
+							onkeyup="this.value=this.value.replace(/\D/g,'')" 
+							onafterpaste="this.value=this.value.replace(/\D/g,'')" 
+							placeholder="排序"/>
+	              		</div>
+	              		<div class="col-xs-3">
+	              			<input type="text" class="form-control" name="sysDict[0].description" placeholder="描述">
+	              		</div>
+	              		<div class="col-xs-1">
+	              			<button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+	              		</div>
+	              	</div>
+	              	
+	              	<!-- ---------------------------------------模板----------------------------------- -->
+	              	
+				<div class="form-group hide" id="stu-template">
+					<div class="col-xs-3">
+						<input type="text" class="form-control" name="label"
+							placeholder="标签">
+					</div>
+					<div class="col-xs-3">
+						<input type="text" class="form-control" name="value"
+							placeholder="键值">
+					</div>
+					<div class="col-xs-2">
+						<input class="form-control"
+							id="id_g" type="text" name="sort"
+							onkeyup="this.value=this.value.replace(/\D/g,'')" 
+							onafterpaste="this.value=this.value.replace(/\D/g,'')" 
+								placeholder="排序"/>
+	               		</div>
+	               		<div class="col-xs-3">
+	               			<input type="text" class="form-control" name="description" placeholder="描述">
+	               		</div>
+						<div class="col-xs-1">
+							<button type="button" class="btn btn-default removeButton">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+	               </div>
+	               <div class="ibox-footer">
+		         	<button type="submit" class="btn btn-primary btn-save" >保存</button>
+		         	<button class="btn btn-default btn-return" id="return-btn" data-mode="list-mng" data-url="${ctxPath}/sys/dict">返回</button>
+		        </div>
+		</div>
+	</form>
+</div>
+
+<script type="text/javascript">
+	var stuIndex = 0;
+	var type = "${sysDictType.code!}";
+	$(function(){
+        valueValidators = {
+            row: '.col-xs-3',
+            validators: {
+                notEmpty : {
+					message : '键值不能为空'
+				},
+				stringLength : {
+					min : 1,
+					max : 100,
+					message : '键值不能超过100个字符'
+				},
+				remote : {
+					message : '键值已被占用',
+					delay : 500,
+					name:'value',
+					data:{type:type},
+					url : "${ctxPath}/sys/dict/checkDictValue/value"
+				}
+            }
+        },
+        sortValidators = {
+            row: '.col-xs-2',
+            validators: {
+				stringLength : {
+					min : 0,
+					max : 5,
+					message : '排序不能超过5个数字'
+				}
+            }
+        };
+        
+	
+		$('#stu-form').bootstrapValidator({
+			excluded: ':disabled',
+			fields : {
+				"sysDict[0].value": valueValidators,
+				"sysDict[0].sort":sortValidators
+			}
+		}).on('success.form.bv', function(e) {
+			e.preventDefault();
+			$(e.target).ajaxSubmit(function(data) {
+				if (data > 0) {
+					msg.success("保存成功!");
+					$("#return-btn").click();
+				}else{
+					msg.error("保存失败!");
+				}
+			})
+		})
+		 // Add button click handler
+        .on('click', '.addButton', function() {
+            stuIndex++;
+            var $template = $('#stu-template'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .attr('data-book-index', stuIndex)
+                                .insertBefore($template);
+
+            // Update the name attributes
+            $clone
+                .find('[name="label"]').attr('name', 'sysDict[' + stuIndex + '].label').end()
+                .find('[name="value"]').attr('name', 'sysDict[' + stuIndex + '].value').end()
+                .find('[name="sort"]').attr('name', 'sysDict[' + stuIndex + '].sort').end()
+                .find('[name="description"]').attr('name', 'sysDict[' + stuIndex + '].description').end();
+
+            // Add new fields
+            // Note that we also pass the validator rules for new field as the third parameter
+            //sysDict[0].label
+            var f = $('#stu-form').data("bootstrapValidator");
+            f.addField('sysDict[' + stuIndex + '].value',valueValidators);
+         	f.addField('sysDict[' + stuIndex + '].sort',sortValidators);
+        })
+        
+         // Remove button click handler
+        .on('click', '.removeButton', function() {
+            var $row  = $(this).parents('.form-group'),
+                index = $row.attr('data-book-index');
+
+            // Remove fields
+            var f = $('#stu-form').data("bootstrapValidator");
+            f.removeField($row.find("[name='sysDict[" + index + "].value']"));
+			f.removeField($row.find("[name='sysDict[" + index + "].sort']"));
+            // Remove element containing the fields
+            $row.remove();
+        });
+	});
+	
+</script>

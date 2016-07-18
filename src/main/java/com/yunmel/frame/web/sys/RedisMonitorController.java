@@ -5,7 +5,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.yunmel.commons.service.RedisService;
+import com.yunmel.syncretic.component.RedisService;
+
 
 
 @Controller

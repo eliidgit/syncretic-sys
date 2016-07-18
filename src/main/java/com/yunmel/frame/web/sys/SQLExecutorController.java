@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
-import com.yunmel.commons.utils.StrUtils;
 import com.yunmel.frame.consts.Constant;
 import com.yunmel.frame.sys.service.SysLogService;
+import com.yunmel.syncretic.utils.commons.StrUtils;
 
 @Controller
 @RequestMapping("sys/monitor/db")

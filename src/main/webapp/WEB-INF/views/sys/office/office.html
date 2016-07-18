@@ -1,0 +1,325 @@
+<div class="page-content wrapper-content no-padding-bottom">
+	<div class="ibox float-e-margins no-padding-bottom no-margin-bottom" style="position: fixed;width:280px;" id="tree-box">
+         <div class="ibox-title">
+             <h5>单位列表</h5>
+         </div>
+         <div  class="ibox-content">
+            <ul  id="tree"></ul>
+         </div>
+         <div class="ibox-footer">
+         	<a class="btn btn-primary btn-sm btn-mng" data-mode="list-mng" data-url="${ctxPath}/sys/office/mng">维护单位</a>
+         	<a class="btn btn-primary btn-sm btn-add" data-mode="add" data-url="${ctxPath}/sys/user/add/dialog" data-title="添加用户">添加用户</a>
+         	<a class="btn btn-primary btn-sm btn-add" data-mode="list-mng" data-url="${ctxPath}/sys/user/add" data-title="">批量添加用户</a>
+         </div>
+     </div>
+	<div class="row" style="margin-left: 290px;">
+         <div class="col-lg-12">
+             <div class="ibox  float-e-margins no-padding-bottom no-margin-bottom">
+                 <div class="ibox-title form-title">
+                     <h5 id="table-title">用户列表<span class="red">(密码重置后为:z123456)</span></h5>
+                     <div class="ibox-tools">
+                         <form action="" class="form-inline" id="search-form">
+                         	<div class="input-group">
+                         		<input type="hidden" name="id"/>
+	                         	<input class="form-control" name="name" placeholder="请输入用户名"/>
+		                         	<span class="input-group-btn"> 
+		                         		<button class="btn btn-primary btn-query" type="button" onclick="query()">查询</button> 
+		                         	</span>
+                         	</div>
+                         	<div class="input-group">
+                         		<span class="input-group-btn"> 
+	                         		<button class="btn btn-info btn-query-all" type="button" onclick="queryAll()">显示所有</button> 
+	                         	</span>
+                         	</div>
+                         </form>
+                     </div>
+                 </div>
+                 <div class="ibox-content no-padding no-border">
+                     <table id="table">
+					     <thead>
+					     <tr>
+					         <th data-field="state" data-checkbox="true"></th>
+							 <th data-field="id"   data-align="center"   data-sortable="true">编号</th>
+							 <th data-field="name" data-formatter="frmDetail" data-align="left" data-sortable="true" >姓名</th>
+							 <th data-field="username" data-formatter="frmDetail" data-align="left" data-sortable="true" >登录名</th>
+							 <th data-field="officename"   data-align="center" data-sortable="true" >单位</th>
+							 <th data-field="mobile"  data-align="center" data-sortable="true" >手机</th>
+							 <th data-field="status" data-formatter="frmUseStaus" data-align="center" data-sortable="true" >使用状态</th>
+							 <th data-field="name" data-formatter="frmOp" data-align="center">操作</th>
+					     </tr>
+					     </thead>
+					 </table>
+                 </div>
+             </div>
+         </div>
+	</div>
+</div>
+
+
+<div id="toolbar" class="hidden">
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='启用'
+		 data-name="用户"
+		 data-url='${ctxPath}/sys/user/update/status'
+		 data-data="{status:1}"
+		 data-callback="query()"
+		 data-select="true" href="javascript:;"><span class=""> 启用 </span></a>
+		 <span class="margin-right">&nbsp;</span>
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='禁用'
+		 data-name="用户"
+		 data-callback="query()"
+		 data-url='${ctxPath}/sys/user/update/status'
+		 data-data="{status:0}"
+		 data-select="true" href="javascript:;"><span class=""> 禁用 </span></a>
+		 <span class="margin-right">&nbsp;</span>
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='删除'
+		 data-name="用户"
+		 data-url='${ctxPath}/sys/user/deletes'
+		 data-data="{status:1}"
+		 data-callback="query()"
+		 data-select="true" href="javascript:;"><span class=""> 删除</span></a>
+	 <span class="margin-right">&nbsp;</span>	 
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='重置密码'
+		 data-name="用户"
+		 data-url='${ctxPath}/sys/user/pwd/reset'
+		 data-callback=" "
+		 data-data="{status:1}"
+		 data-select="true" href="javascript:;"><span class="">重置密码</span></a>
+</div>
+<div id="opBtn" class="hidden">
+	<div class="action-buttons">
+		<a href="javascript:void(0)" 
+			data-mode="edit" 
+			data-width='50%'
+			data-title="【{name}】编辑"
+			data-url="${ctxPath}/sys/user/edit/dialog"
+			data-data="{id:{id}}"
+			data-callback="query()"
+			title="编辑" data-toggle="tooltip" data-placement="left"
+			class="green">
+			<i class="fa fa-pencil bigger-130"></i>
+		</a>
+		<a href="javascript:void(0)" 
+			data-mode="sop" 
+			data-op="删除"
+			data-name="用户"
+			data-url="${ctxPath}/sys/user/delete/{id}" 
+			title="删除" data-toggle="tooltip" data-placement="left"
+			class="red"
+			data-callback="query()"
+			><i class="fa fa-trash-o bigger-130"></i>
+		</a>
+	</div>
+</div>
+
+
+<script src="${ctxPath}/static/js/plugins/fuelux/fuelux.tree.js"></script>
+<script src="${ctxPath}/static/js/yunmel/yunmel.treeview.js"></script>
+<script type="text/javascript">
+	var $tableTiltle = null;
+	var $tree = null;
+	var resizeTimer = null;
+  	var $form = null;	
+	var _editSortHtml = null;
+	var $table = null;
+	var y_scroll = null;
+	var opBtnHtml = null;
+	
+	
+	$(function(){
+		$tree = $("#tree");
+		$tableTiltle = $("#table-title");
+		$form = $("#search-form");
+		_editSortHtml = $("#editSortBox").html();
+		$table = $('#table');
+		opBtnHtml = $("#opBtn").html();
+		
+		$tree.yunmel_tree({
+	        data:${treeList}
+	    });
+	    
+	    
+	    $tree.on("click.fu.tree",function(e){
+	    	var obj = $("#tree").tree("selectedItems");
+	   		if(obj != undefined && obj.length > 0){
+	   			if(obj[0].id != $form.find("input[name='id']").val()){
+	   				var name = [];
+		   			name.push(obj[0].name);
+		   			var pid = obj[0].parentId;
+		   			while(pid != null && pid != 0){
+		   				var $li = $tree.find("li[id="+pid+"]");
+		   				name.push($li.data("name"));
+		   				pid = $li.data("parentId");
+		   			}
+		   			
+	   				$tableTiltle.html(name.reverse().join('>'));
+	   			
+	   				$form.find("input[name='name']").val('');
+	   				$form.find("input[name='id']").val(obj[0].id);
+					query();
+	   			}
+	   		}
+	   		
+	   		if(y_scroll != null){
+	   			$("#tree-box .ibox-content").trigger("mouseenter");
+	   		}
+	    });
+    	
+    	$table.bootstrapTable({
+	    	paginationFixed:true,
+	    	sortName:'sort',
+	    	showExport:true,
+	    	controlToolbar:'#toolbar',
+	    	url:"${ctxPath}/sys/user/list?"+$("#search-form").serialize(),
+	    	onLoadSuccess:function(){
+	    		msg.success("单位-用户加载成功");
+	    		$("[data-toggle=popover]").popover();
+	    	},
+	    	onDblClickCell:function(field, value, row, $e){
+	    		if(field == 'sort'){
+	    			var nameInput = $('<input  type="text"/>').width(50);
+	    			$e.html(nameInput);
+					nameInput.val(value).keyup(function(e){
+						nameInput.val(nameInput.val().replace(/\D/g,''));
+					}).keydown(function(e) {
+						var nameInput = $(this);
+						if ($.inArray(e.keyCode, [13, 27]) !== -1) {
+							e.preventDefault();
+							if (e.keyCode === 13) {
+								nameInput.val(nameInput.val().replace(/\D/g,''));
+								var v = nameInput.val();
+								if(v.length <= 0){
+									v = 1;
+								}
+								/* editSortWin(row.id,v); */
+							}else if(e.keyCode === 27){
+								$e.html(frmSort(value,row));
+							}
+						}
+					})[0].focus();
+	    		}
+	    	}
+	    });
+    	
+    	$table.on('show.bs.popover', function () {
+		    alert($(this).data("id"))
+		})
+    	
+    	setTreeBoxHeight();
+    	window.onresize = function(){  
+		  if(resizeTimer) clearTimeout(resizeTimer);  
+		  resizeTimer = setTimeout("doResize()",300);  
+		}  
+	})
+	
+    
+    
+    function frmSrcType(value, row){
+    	return value === '0' ? '菜单资源' : '<span class="pink">按钮资源</span>';
+    }
+    
+    function frmSort(value,row){
+    	return '<a href="javascript:void(0)">'+value+'</a>';
+    }
+    
+     function editStaus(id,status){
+     	if(status == 1){//正常改为禁用
+     		status = 0;
+     	}else{//禁用和锁定改为正常
+     		status = 1;
+     	}
+    	$.post("${ctxPath}/sys/user/update/status/"+id,{status:status},function(data){
+    		if(data > 0){
+				$table.bootstrapTable("updateByUniqueId",{id:id, row:{status:status}});
+				$('*').tooltip('hide')
+    			msg.success("修改成功");
+    		}else{
+    			msg.error("修改失败");
+    		}
+    	},"json");
+    }
+    
+    function frmDetail(value,row){
+    	var html = [];
+    	html.push('<a href="javascript:;"',
+						'data-title="【'+value+'】详情" data-width="40%" data-mode="detail"',
+						'data-url="${ctxPath}/sys/user/detail/'+row.id+'"',
+						'>',
+						value,
+					'</a>');
+		return html.join(" ");
+    }
+ 
+ 	var admin = "${admin!'admin'}"
+    
+    function frmUseStaus(value,row){
+    	if(row.username!=admin){
+    		if(value == 1){
+    			return '<a href="javascript:void(0)" title="双击修改状态" data-toggle="tooltip" data-placement="left" ondblclick="editStaus('+row.id+',\''+value+'\')">正常<a>'
+    		}else if(value == 0){
+    			return '<a href="javascript:void(0)" title="双击修改状态" data-toggle="tooltip" data-placement="left" ondblclick="editStaus('+row.id+',\''+value+'\')"><span class="red">禁用</span><a>'
+    		}else if(value == 3){
+    			return '<a href="javascript:void(0)" title="双击修改状态" data-toggle="tooltip" data-placement="left" ondblclick="editStaus('+row.id+',\''+value+'\')"><span class="red">锁定</span><a>'
+    		}
+    	}else{
+    		return "<span class='red'>正常</span>"
+    	}
+    }
+   
+	
+	
+	function queryAll(){
+		$tableTiltle.html("所有菜单");
+		$form.find("input[name='name']").val('');
+		$form.find("input[name='id']").val('');
+		query();
+	}
+	
+	function query(){
+		$table.bootstrapTable("refresh",{url:"${ctxPath}/sys/user/list?"+$("#search-form").serialize()});
+	}
+	
+	
+	function setTreeBoxHeight(){
+		var h=  yunmel.helper.getCenterHeight() - $(".page-content").css("padding-top").replace("px","")*1;
+		$("#tree-box").height(h).find(".ibox-content").height(h - 120);
+		if(y_scroll == null){
+			y_scroll = $("#tree-box .ibox-content").yunmel_scroll({
+			size:h-120,
+			mouseWheelLock: true
+			});
+			y_scroll = y_scroll.data('yunmel_scroll');
+		}else{
+			y_scroll.update({size:h-120})
+		}
+		console.log(y_scroll)
+	}
+
+	function doResize(){  
+	 	$table.bootstrapTable("refresh");
+	 	setTreeBoxHeight();
+	} 
+	
+	function frmOp(value,row){
+		if(row.username!=admin){
+	    	return opBtnHtml
+	    	.replace(new RegExp("{id}", "g"), row.id)
+	    	.replace(new RegExp("{pid}", "g"), row.pid)
+	    	.replace(new RegExp("{name}", "g"), row.name);
+	    }else{
+	    	return "";
+	    }
+    }
+	
+</script>

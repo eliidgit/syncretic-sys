@@ -10,8 +10,8 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({ "unused"})
 @Table(name="sys_log")
 public class SysLog extends BaseEntity{
-
-	private String type;    //日志类型  
+  private static final long serialVersionUID = 3400073108046574004L;
+  private String type;    //日志类型  
 	private String createBy;    //创建者  
 	private Long createDate;    //  
 	private String remoteAddr;    //操作IP地址  

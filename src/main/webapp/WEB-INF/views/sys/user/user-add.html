@@ -1,0 +1,190 @@
+<div class="page-content wrapper-content">
+	<div class="row">
+		<div class="col-lg-12">
+			<form class="form-horizontal" method="post" id="stu-form" action="${ctxPath}/sys/user/save/add">
+			<div class="ibox">
+				<div class="ibox-title form-title">
+                     <h5 id="table-title">批量添加用户</h5>
+                </div>    
+                <div class="ibox-content">
+                	<div class="form-group">
+						<label  class="col-lg-1 control-label">所属单位</label>
+						<div class="col-lg-5">
+							 <#treeselect treeSelectId="type-tree-select" expandAll="true" title="请选择单位"  data="${treeList!}" selectType="2" modelName="officeName" modelId="officeId"/>
+						</div>
+					</div>
+                	<div class="form-group">
+						<label  class="col-lg-1 control-label">用户密码</label>
+						<div class="col-lg-5">
+							 <input type="password" class="form-control" name="password" placeholder="用户密码">
+						</div>
+					</div>
+                	<hr/>
+                	<div class="form-group">
+                		<div class="col-xs-2">
+                			<input type="text" class="form-control" name="sysUser[0].name" placeholder="姓名">
+                		</div>
+                		<div class="col-xs-2">
+                			<input type="text" class="form-control" name="sysUser[0].username" placeholder="用户名">
+                		</div>
+                		<div class="col-xs-2">
+                			<input type="text" class="form-control" name="sysUser[0].mobile" placeholder="手机">
+                		</div>
+                		<div class="col-xs-2">
+                			<input type="text" class="form-control" name="sysUser[0].email" placeholder="邮箱">
+                		</div>
+                		
+                		<div class="col-xs-1">
+                			<button type="button" class="btn btn-default addButton"><i class="fa fa-plus"></i></button>
+                		</div>
+                	</div>
+                	
+                	<!-- -------------------------------------------------------------------------- -->
+                	
+					<div class="form-group hide" id="stu-template">
+						<div class="col-xs-2">
+                			<input type="text" class="form-control" name="name" placeholder="姓名">
+                		</div>
+                		<div class="col-xs-2">
+                			<input type="text" class="form-control" name="username" placeholder="用户名">
+                		</div>
+                		<div class="col-xs-2">
+                			<input type="text" class="form-control" name="mobile" placeholder="手机">
+                		</div>
+                		<div class="col-xs-2">
+                			<input type="text" class="form-control" name="email" placeholder="邮箱">
+                		</div>
+						<div class="col-xs-1">
+							<button type="button" class="btn btn-default removeButton">
+								<i class="fa fa-minus"></i>
+							</button>
+						</div>
+					</div>
+                </div>
+                <div class="ibox-footer">
+		         	<button type="submit" class="btn btn-primary btn-save" >保存</button>
+		         	<button class="btn btn-default btn-return" id="return-btn" data-mode="list-mng" data-url="${ctxPath}/sys/office">返回</button>
+		        </div>
+		</div>
+		</form>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	var stuIndex = 0;
+	
+	$(function() {
+		var userNameValidators = {
+            row: '.col-xs-2',   // The title is placed inside a <div class="col-xs-4"> element
+            validators: {
+               notEmpty : {
+					message : '用户名不能为空'
+				},
+				stringLength : {
+					min : 1,
+					max : 100,
+					message : '用户名不能超过100个字符'
+				},
+				remote : {
+					message : '用户名已被占用',
+					delay : 500,
+					name:'username',
+					url : "${ctxPath}/sys/user/check/username"
+				}
+            }
+        }
+        var emailValidators = {
+            row: '.col-xs-2',   // The title is placed inside a <div class="col-xs-4"> element
+            validators: {
+				emailAddress: {
+                    message: '请输入正确的电子邮箱地址'
+                }
+            }
+        }
+	
+		$('#stu-form').bootstrapValidator({
+			excluded: ':disabled',
+			fields : {
+				"sysUser[0].username": userNameValidators,
+				"sysUser[0].email": emailValidators,
+				"officeId" : {
+					validators : {
+						notEmpty : {
+							message : '请选择单位'
+						}
+					}
+				},
+				"password" : {
+					validators : {
+						notEmpty : {
+							message : '请填写初始密码'
+						},
+						@if(appConf.get("PWD_STRONG_VERIFCATION") == "1"){
+                        regexp:{
+                        	regexp:/^(?![0-9]+$)(?![a-zA-Z]+$)[\w\W]{6,16}$/,
+                        	message:'密码至少包含一个字母和一个数字'
+                        },
+                        @}
+                        stringLength: {
+                            min: 6,
+                            max: 100,
+                            message: '密码在6-100个字符间（包括6和100）'
+                        }
+					}
+				}
+			}
+		}).on('success.form.bv', function(e) {
+			e.preventDefault();
+			$(e.target).ajaxSubmit(function(data) {
+				if (data > 0) {
+					msg.success("保存成功!");
+					$("#return-btn").click();
+				}else{
+					msg.error("保存失败!");
+				}
+			})
+		})
+		 // Add button click handler
+        .on('click', '.addButton', function() {
+            stuIndex++;
+            var $template = $('#stu-template'),
+                $clone    = $template
+                                .clone()
+                                .removeClass('hide')
+                                .removeAttr('id')
+                                .attr('data-book-index', stuIndex)
+                                .insertBefore($template);
+
+            // Update the name attributes
+            $clone
+                .find('[name="name"]').attr('name', 'sysUser[' + stuIndex + '].name').end()
+                .find('[name="username"]').attr('name', 'sysUser[' + stuIndex + '].username').end()
+                .find('[name="mobile"]').attr('name', 'sysUser[' + stuIndex + '].mobile').end()
+                .find('[name="email"]').attr('name', 'sysUser[' + stuIndex + '].email').end();
+
+            // Add new fields
+            // Note that we also pass the validator rules for new field as the third parameter
+            //sysUser[0].label
+            var f = $('#stu-form').data("bootstrapValidator");
+            f.addField('sysUser[' + stuIndex + '].username',userNameValidators);
+            f.addField('sysUser[' + stuIndex + '].email',emailValidators);
+        })
+        
+         // Remove button click handler
+        .on('click', '.removeButton', function() {
+            var $row  = $(this).parents('.form-group'),
+                index = $row.attr('data-book-index');
+
+            // Remove fields
+            var f = $('#stu-form').data("bootstrapValidator");
+            f.removeField($row.find("[name='sysUser[" + index + "].username']"));
+            f.removeField($row.find("[name='sysUser[" + index + "].email']"));
+            // Remove element containing the fields
+            $row.remove();
+        });
+	});
+	
+</script>
+	
+	

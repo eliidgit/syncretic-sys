@@ -1,0 +1,22 @@
+<div id="content-container" style="">
+	<div class="console-title  clearfix">
+		<div class="pull-left">
+			<h5>Redis监控</h5>
+		</div>
+	</div>
+	
+	<div id="page-content">
+		<div class="panel">
+			<div class="panel-heading">
+				<h3 class="panel-title">主机列表</h3>
+			</div>
+			<div class="panel-body">
+				<select>
+					@for(h in hosts){
+						<option>${h.host!} - ${h.port}-${h.name}-${h.password}</option>
+					@}
+				</select>
+			</div>
+		</div>
+	</div>	
+<div>

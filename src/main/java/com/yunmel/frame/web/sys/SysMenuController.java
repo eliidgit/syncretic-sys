@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
-import com.yunmel.commons.utils.StrUtils;
-import com.yunmel.commons.utils.TreeUtils;
 import com.yunmel.frame.consts.Constant;
 import com.yunmel.frame.sys.model.SysMenu;
 import com.yunmel.frame.sys.service.SysMenuService;
 import com.yunmel.frame.sys.vo.SysMenuVO;
+import com.yunmel.syncretic.utils.biz.TreeUtils;
+import com.yunmel.syncretic.utils.commons.StrUtils;
 
 /**
  * 菜单管理

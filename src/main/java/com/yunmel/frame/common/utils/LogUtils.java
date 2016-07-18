@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.yunmel.commons.utils.IPUtils;
 import com.yunmel.frame.sys.model.SysUser;
+import com.yunmel.syncretic.utils.net.IPUtils;
 
 public class LogUtils {
 
@@ -80,7 +80,6 @@ public class LogUtils {
     String uri = (String) request.getAttribute("javax.servlet.error.request_uri");
     Throwable t = (Throwable) request.getAttribute("javax.servlet.error.exception");
 
-
     if (statusCode == null) {
       statusCode = 0;
     }
@@ -105,7 +104,6 @@ public class LogUtils {
 
   }
 
-
   public static String getBlock(Object msg) {
     if (msg == null) {
       msg = "";
@@ -113,14 +111,13 @@ public class LogUtils {
     return "[" + msg.toString() + "]";
   }
 
-
-
+  @SuppressWarnings("unchecked")
   protected static String getParams(HttpServletRequest request) {
     Map<String, String[]> params = request.getParameterMap();
     return JSON.toJSONString(params);
   }
 
-
+  @SuppressWarnings("unchecked")
   private static String getHeaders(HttpServletRequest request) {
     Map<String, List<String>> headers = Maps.newHashMap();
     Enumeration<String> namesEnumeration = request.getHeaderNames();
@@ -135,7 +132,6 @@ public class LogUtils {
     }
     return JSON.toJSONString(headers);
   }
-
 
   protected static String getUsername() {
     SysUser sysUser = SysUserUtils.getCacheLoginUser();

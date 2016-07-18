@@ -31,6 +31,7 @@ public class LogAdvice
   @Resource
   private SysLogService sysLogService;
 
+  @SuppressWarnings("unchecked")
   @Around("within(@org.springframework.stereotype.Controller *)")
   public Object recordSysLog(ProceedingJoinPoint point) throws Throwable
   {

@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
-import com.yunmel.commons.utils.TreeUtils;
 import com.yunmel.frame.common.utils.SysUserUtils;
 import com.yunmel.frame.common.utils.ValidUtils;
 import com.yunmel.frame.sys.model.SysMenu;
@@ -32,6 +31,7 @@ import com.yunmel.frame.sys.service.SysMenuService;
 import com.yunmel.frame.sys.service.SysOfficeService;
 import com.yunmel.frame.sys.service.SysRoleService;
 import com.yunmel.frame.sys.service.SysUserService;
+import com.yunmel.syncretic.utils.biz.TreeUtils;
 
 /**
  * 

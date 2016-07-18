@@ -12,8 +12,7 @@
     </bean>
 
     <!-- Realm实现 -->
-    <bean id="userRealm" class="com.yunmel.frame.common.shiro.ShiroDbRealm">
-    </bean>
+    <bean id="userRealm" class="com.yunmel.frame.common.shiro.ShiroDbRealm"></bean>
 
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -41,7 +40,6 @@
             <value>
                 /static/** = anon
                 /login = anon
-                /api/v1/unit/list = anon
                 /dl/** = anon
                 /auth/** = anon
                 /** = authc <!-- 需要认证 -->

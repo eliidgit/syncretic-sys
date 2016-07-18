@@ -1,0 +1,126 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h3>日志管理 </h3>
+</section>
+<!-- Main content -->
+<section class="content">
+  <div class="row">
+     <div class="col-xs-12">
+       <div class="box" style="background-color: #fff;">
+         <div class="box-header">
+          <form class="form-inline" id="search-form">
+            <div class="pull-left">
+              <div class="form-group">
+                <label class="control-label">类型：</label>
+                <#dict name="type" class="form-control" width="200px" type="sys_log_type" isDefault="true"/>
+              </div>
+              <div class="form-group">
+                <label class="control-label">请求地址：</label>
+                <input class="form-control" name="requestUri" id="requestUri" placeholder="请输入请求地址">
+              </div>
+              <div class="form-group">
+                <label class="control-label">描述：</label>
+                <input class="form-control" name="description" id="description" placeholder="请输入描述">
+              </div>
+              <div class="form-group">
+                <a class="btn btn-default" onclick="query()">搜索</a>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- /.box-header -->
+        <div class="box-body">
+          <table id="table" >
+            <thead>
+             <tr>
+               <th data-field="type" data-formatter="frmDict" data-align="left" data-sortable="true" >类型</th>
+               <th data-field="createDate" data-formatter="frmDate" data-align="center" data-sortable="true" >操作时间</th>        
+               <th data-field="requestUri" data-align="left" data-sortable="true" >请求地址</th>
+               <th data-field="method" data-align="center" data-sortable="true" >操作方式</th>
+               <th data-field="params" data-formatter="frmLength10" data-align="left" data-sortable="true" >参数</th>
+               <th data-field="description" data-formatter="frmLength10" data-align="center" data-sortable="true" >描述</th>
+               <th data-field="" data-width="60" data-formatter="frmOp"  data-align="center" data-sortable="false" >操作</th>
+             </tr>
+           </thead>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="opBtn" class="hidden">
+  <div class="action-buttons">
+    <a href="javascript:void(0)" 
+      data-mode="detail"
+      data-title="日志查看"
+      data-url="${ctxPath}/sys/log/detail/showlayer"
+      data-data="{id:{id}}"
+      title="查看" data-toggle="tooltip" data-placement="left"
+      class="green">
+      <i class=" fa fa-search-plus bigger-130"></i>
+    </a>
+  </div>
+</div>
+
+<script type="text/javascript">
+  var opBtnHtml = $("#opBtn").html();
+  var $table = $("#table");
+  var dict = ${dict};
+  var  resizeTimer = null;  
+  $(function(){
+    $table.bootstrapTable({
+      paginationFixed:true,
+      sortName:'createDate',
+      sortOrder:'desc',
+      checkboxFooter:false,
+      url:"${ctxPath}/sys/log/list?"+$("#search-form").serialize(),
+      onLoadSuccess:function(){
+          //msg.success("日志加载成功");
+        }
+      }); 
+
+    window.onresize = function(){  
+      if(resizeTimer) clearTimeout(resizeTimer);  
+      resizeTimer = setTimeout("doResize()",300);  
+    }  
+  });
+  
+  function doResize(){  
+    $table.bootstrapTable("refresh");
+  }  
+  
+  function frmLength10(value,row){
+    if(value != null && value != undefined && value.length > 10){
+      return value.substr(0,10);
+    }
+    return value;
+  }
+  
+  function frmOp(value,row){
+    return opBtnHtml
+    .replace(new RegExp("{id}", "g"), row.id)
+    .replace(new RegExp("{pid}", "g"), row.pid)
+    .replace(new RegExp("{name}", "g"), row.name);
+  }
+  
+  function frmDate(value,row){
+    return new Date(parseInt(value)).toLocaleString().replace(/:\d{1,2}$/,' ');
+  }
+  
+  function frmDict(value,row){
+    if(dict == null && dict == undefined){
+      return value;
+    }
+    for(var i = 0; i < dict.length;i++){
+      if(dict[i].value == value){
+        return dict[i].label;
+      }
+    }
+    return value;
+  }
+  
+  function query(){
+    $table.bootstrapTable("refresh",{url:"${ctxPath}/sys/log/list?"+$("#search-form").serialize()});
+  }
+</script>

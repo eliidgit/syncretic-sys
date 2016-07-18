@@ -1,0 +1,38 @@
+<section class="content-header">
+  <h3>JVM </h3>
+</section>
+<!-- Main content -->
+<section class="content">
+	 <div class="box" style="background-color: #fff;">
+        <div class="box-header">
+        	<h5>JVM 运行时信息</h5>
+        </div>
+        <div class="box-body">
+        	@include("runtime.html"){}
+        </div>
+     </div>     
+     <div class="box" style="background-color: #fff;">
+        <div class="box-header">
+        	<h5>操作系统信息</h5>
+        </div>
+        <div class="box-body">
+        	@include("OS.html"){}
+        </div>
+     </div>   
+     <div class="box" style="background-color: #fff;">
+        <div class="box-header">
+        	<h5>JVM 内存信息</h5>
+        </div>
+        <div class="box-body">
+        	@include("memory.html"){}
+        </div>
+     </div>   
+     <div class="box" style="background-color: #fff;">
+        <div class="box-header">
+        	<h5>JVM 线程信息</h5>
+        </div>
+        <div class="box-body">
+        	@include("thread.html",{"tm":tm,"list":list}){}
+        </div>
+     </div>   
+</section>

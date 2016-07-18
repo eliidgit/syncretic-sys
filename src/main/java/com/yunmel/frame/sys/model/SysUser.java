@@ -12,7 +12,7 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({"unused"})
 @Table(name = "sys_user")
 public class SysUser extends BaseEntity {
-
+  private static final long serialVersionUID = 5416055812870103481L;
   private String unitId; // 所在单位
   private String username; // 登录名
   private String password; // 密码

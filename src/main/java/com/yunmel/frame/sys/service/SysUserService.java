@@ -14,21 +14,18 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yunmel.commons.exception.BaseException;
-import com.yunmel.commons.service.BaseService;
-import com.yunmel.commons.utils.Collections3;
-import com.yunmel.commons.utils.DealParamUtil;
-import com.yunmel.commons.utils.EncryptUtils;
-import com.yunmel.commons.utils.PasswordEncoders;
-import com.yunmel.frame.common.ErrorCode;
 import com.yunmel.frame.consts.Constant;
-import com.yunmel.frame.sys.exception.APIException;
 import com.yunmel.frame.sys.mapper.SysOfficeMapper;
 import com.yunmel.frame.sys.mapper.SysRoleMapper;
 import com.yunmel.frame.sys.mapper.SysUserMapper;
 import com.yunmel.frame.sys.model.SysOffice;
 import com.yunmel.frame.sys.model.SysUser;
 import com.yunmel.frame.sys.vo.SysUserVO;
+import com.yunmel.syncretic.core.BaseService;
+import com.yunmel.syncretic.utils.biz.DealParamUtil;
+import com.yunmel.syncretic.utils.commons.CollectionsUtils;
+import com.yunmel.syncretic.utils.encr.EncryptUtils;
+import com.yunmel.syncretic.utils.encr.PasswordEncoders;
 
 /**
  * 
@@ -52,15 +49,14 @@ public class SysUserService extends BaseService<SysUser> {
    * @param sysUser
    * @return
    */
+  @SuppressWarnings("unused")
   public int saveSysUser(SysUser sysUser) {
     if (sysUser.getId() != null) {// 修改-判断用户是否是admin用户
       SysUser user = this.selectByPrimaryKey(sysUser.getId());
-      if (user.getUsername().equals(Constant.SYS_ADMIN_USER))
-        return 0;
+      if (user.getUsername().equals(Constant.SYS_ADMIN_USER)) return 0;
     } else {
       // 禁止添加admin用户
-      if (sysUser.getUsername().equals(Constant.SYS_ADMIN_USER))
-        return 0;
+      if (sysUser.getUsername().equals(Constant.SYS_ADMIN_USER)) return 0;
     }
 
 
@@ -70,7 +66,7 @@ public class SysUserService extends BaseService<SysUser> {
     if (sysOffice != null) {
       companyId = sysOffice.getId();
     }
-//    sysUser.setCompanyId(companyId);
+    // sysUser.setCompanyId(companyId);
     if (StringUtils.isNotBlank(sysUser.getPassword())) {
       String encryptPwd = PasswordEncoders.encrypt(sysUser.getPassword(), sysUser.getUsername());
       sysUser.setPassword(encryptPwd);
@@ -84,8 +80,7 @@ public class SysUserService extends BaseService<SysUser> {
       sysRoleMapper.deleteUserRoleByUserId(sysUser.getId());
       count = this.updateByPrimaryKeySelective(sysUser);
     }
-    if (sysUser.getRoleIds() != null)
-      sysRoleMapper.insertUserRoleByUserId(sysUser);
+    if (sysUser.getRoleIds() != null) sysRoleMapper.insertUserRoleByUserId(sysUser);
     return 1;
   }
 
@@ -117,13 +112,14 @@ public class SysUserService extends BaseService<SysUser> {
     List<SysUser> list = this.findByParams(params);
     return new PageInfo<SysUser>(list);
   }
-  
+
   public List<SysUser> findAllUser() {
     return sysUserMapper.findAllUser();
   }
 
   /**
    * 不分页
+   * 
    * @param map
    * @return
    */
@@ -154,39 +150,37 @@ public class SysUserService extends BaseService<SysUser> {
     return sysUserMapper.getUserByUsername(username);
   }
 
-//  public int updatePassword(SysUser user, String secPwd) {
-//    SysPwdHistory sph = new SysPwdHistory();
-//    sph.setUsername(user.getUsername());
-//    sph.setPassword(user.getPassword());
-//    sph.setCreateDate(new Date());
-//    int count = sysPwdHistoryMapper.insertSelective(sph);
-//
-//    SysUser newUser = new SysUser();
-//    newUser.setId(user.getId());
-//    newUser.setUsername(user.getUsername());
-//    newUser.setPassword(secPwd);
-//
-//    int ntime =
-//        Integer.parseInt(sysConfigService.findByKeyFromRedis(SysConfigKey.PWD_NEXT_MOD_TIME));
-//    if (ntime == 0) {
-//      newUser.setNextModPwdDate(null);
-//    } else {
-//      newUser.setNextModPwdDate(DateTime.now().plusDays(ntime).toDate());
-//    }
-//
-//
-//    /**
-//     * 为了解决第一用户登录后，必须修改密码才能进入系统，而判断用户是否是第一次进入系统的 标准是看getLastLoginDate的值是否为空。 如果用户修改了密码，必须将值修改后才能进入系统
-//     */
-//    if (user.getLastLoginDate() == null) {
-//      newUser.setLastLoginDate(user.getLoginDate());
-//      newUser.setLastLoginIp(user.getLoginIp());
-//    }
-//    count += this.updateByPrimaryKeySelective(newUser);
-//    return count;
-//  }
-
- 
+  // public int updatePassword(SysUser user, String secPwd) {
+  // SysPwdHistory sph = new SysPwdHistory();
+  // sph.setUsername(user.getUsername());
+  // sph.setPassword(user.getPassword());
+  // sph.setCreateDate(new Date());
+  // int count = sysPwdHistoryMapper.insertSelective(sph);
+  //
+  // SysUser newUser = new SysUser();
+  // newUser.setId(user.getId());
+  // newUser.setUsername(user.getUsername());
+  // newUser.setPassword(secPwd);
+  //
+  // int ntime =
+  // Integer.parseInt(sysConfigService.findByKeyFromRedis(SysConfigKey.PWD_NEXT_MOD_TIME));
+  // if (ntime == 0) {
+  // newUser.setNextModPwdDate(null);
+  // } else {
+  // newUser.setNextModPwdDate(DateTime.now().plusDays(ntime).toDate());
+  // }
+  //
+  //
+  // /**
+  // * 为了解决第一用户登录后，必须修改密码才能进入系统，而判断用户是否是第一次进入系统的 标准是看getLastLoginDate的值是否为空。 如果用户修改了密码，必须将值修改后才能进入系统
+  // */
+  // if (user.getLastLoginDate() == null) {
+  // newUser.setLastLoginDate(user.getLoginDate());
+  // newUser.setLastLoginIp(user.getLoginIp());
+  // }
+  // count += this.updateByPrimaryKeySelective(newUser);
+  // return count;
+  // }
 
   public Integer updateStauts(String[] ids, String status) {
     int c = 0;
@@ -232,7 +226,6 @@ public class SysUserService extends BaseService<SysUser> {
     }
   }
 
-
   public Integer resetPwd(String[] ids) {
     int c = 0;
     SysUser user = null;
@@ -273,62 +266,12 @@ public class SysUserService extends BaseService<SysUser> {
         stu.setStatus(Constant.USER_STATUS_NORMAL);
         stu.setUnitId(officeId);
         stu.setPassword(password);
-//        stu.setCompanyId("");
+        // stu.setCompanyId("");
         c += this.insertSelective(stu);
       }
     }
     return c;
   }
-
-  
-  
-  /**
-   * 移动端用户注册
-   * 
-   * @param username
-   * @param password
-   * @param name
-   * @return
-   * @throws UserNameExistException
-   */
-  public SysUser addUser(String username, String password, String name, String avatar,String unitId)
-      throws APIException {
-    SysUser user = findUserByUsername(username);
-    if (null != user) {
-      throw new APIException(ErrorCode.USERNAME_EXIST);
-    }
-    user = new SysUser();
-    user.setUsername(username);
-    user.setMobile(username);
-    user.setUnitId(unitId);
-    user.setPassword(EncryptUtils.SHA1_HEX(password));
-    user.setName(name);
-    user.setStatus(Constant.USER_STATUS_NORMAL);
-    user.setAvatar("dl/avatar/" + avatar);
-    Integer c = insertSelective(user);
-    return user;
-  }
-
-  /**
-   * 移动端登录
-   * 
-   * @param username
-   * @param password
-   * @return
-   * @throws BaseException
-   */
-  public SysUser updateLogin(String username, String password) throws BaseException {
-    SysUser user = findUserByUsername(username);
-    if (null == user) {
-      throw new APIException(ErrorCode.USER_NOT_EXIST);
-    }
-    if (!user.getPassword().equals(EncryptUtils.SHA1_HEX(password))) {
-      throw new APIException(ErrorCode.USER_PASSWORD_ERROR);
-    }
-    return findUserByUsername(username);
-  }
-  
-  
 
   public PageInfo<SysUser> findUnApproveUser(Map<String, Object> params) {
     DealParamUtil.dealParam(params);
@@ -339,6 +282,7 @@ public class SysUserService extends BaseService<SysUser> {
 
   /**
    * 通过用户名和密码查询用户
+   * 
    * @param username 用户名
    * @param password 密码
    * @return
@@ -347,12 +291,13 @@ public class SysUserService extends BaseService<SysUser> {
     SysUser record = new SysUser();
     record.setUsername(username);
     List<SysUser> users = this.select(record);
-    if(Collections3.isEmpty(users)){
+    if (CollectionsUtils.isEmpty(users)) {
+      LOG.error("can't find user by username[{}].", username);
       return null;
     }
-    
+
     SysUser user = users.get(0);
-    if(user.getPassword().equals(EncryptUtils.SHA1_HEX(password))){
+    if (user.getPassword().equals(EncryptUtils.SHA1_HEX(password))) {
       return user;
     }
     return null;

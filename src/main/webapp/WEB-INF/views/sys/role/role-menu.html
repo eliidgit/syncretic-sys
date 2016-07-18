@@ -1,0 +1,192 @@
+<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox  no-border no-padding no-box-shadow">
+			<div class="ibox-content no-border no-padding">
+				<form class="form-inline" id="menu-auth-save-form">
+					@for(m in menus){
+					<div class="item">
+						<div class="item-content">
+						<table class="table table-hover table-bordered table-priv">	
+							@var second =  m.children;	  
+							<tr>
+								  <th rowspan="${second.~size}" width="120" style="vertical-align:middle;">
+									  <label class="checkbox">
+							            	${m.name!}<input type="checkbox" value="${m.id}" class="checkAll"> 
+							          </label>
+								  </th>
+								  @if(second.~size > 0){
+								  	 <th  width="120" style="vertical-align:middle;">
+										  <label class="checkbox">
+								            	${second[0].name!}<input type="checkbox" data-id="${second[0].id}" value="${second[0].id}" class="checkbox second"> 
+								          </label>
+								    </th>
+								  	 <td>
+								  	 	@var btns = second[0].children;
+										@for(b in btns){
+											@if(b.type == "1"){
+												<label class="checkbox">
+													<input type="checkbox" class="btnauth" data-parent="${second[0].id}"  value="${b.id}"  name=""> 
+													${b.name!}
+												</label>
+											@}
+										@}
+								  	 </td>
+								  @}
+							</tr>
+							@for(s in second){
+								@if(sLP.index != 1){
+								<tr>
+									<th  width="120" style="vertical-align:middle;">
+										  <label class="checkbox">
+								            	${s.name!}<input type="checkbox" data-id="${s.id}" value="${s.id}" class="checkbox second"> 
+								          </label>
+								    </th>
+									<td>
+										@var btns = s.children;
+										@for(b in btns){
+											@if(b.type == "1"){
+												<label class="checkbox">
+													<input type="checkbox" data-parent="${s.id}" value="${b.id}"  class="btnauth"  name=""> 
+													${b.name!}
+												</label>
+											@}
+										@}
+									</td>
+								</tr>	
+								@}
+							@}
+						</table>
+						</div>
+					</div>
+					@}
+				</form>
+			</div>
+		</div>
+	</div>
+</div>	
+
+
+<script type="text/javascript">
+var $form = null;
+@if(isEmpty(resIds)){
+	var resIds = [];
+@}else{
+	var resIds = ${resIds};
+@}
+
+$(function(){
+	$form = $("#menu-auth-save-form");
+	
+	$(".checkAll").click(function(){
+		if($(this).is(':checked')){
+			$(this).closest("table").find("input[type='checkbox']").prop("checked",true);
+		}else{
+			$(this).closest("table").find("input[type='checkbox']").prop("checked",false);
+		}
+	})
+	$(".second").click(function(){
+		if($(this).is(':checked')){
+			$(this).closest("table").find("input[data-parent='"+$(this).data("id")+"']").prop("checked",true);
+		}else{
+			$(this).closest("table").find("input[data-parent='"+$(this).data("id")+"']").prop("checked",false);
+		}
+		var c = $(this).closest("table").find("input[type='checkbox']").length;
+		var s = $(this).closest("table").find("input[type='checkbox']:checked").length;
+		if(s + 1 == c){
+			$(this).closest("table").find(".checkAll").prop("checked",true);
+		}else{
+			$(this).closest("table").find(".checkAll").prop("checked",false);
+		}
+		changeAllSelect(this);
+	})
+	
+	$(".btnauth").click(function(){
+		var all = $(this).closest("table").find("input[data-parent='"+$(this).data("parent")+"']").length;
+		var cheked = $(this).closest("table").find("input[data-parent='"+$(this).data("parent")+"']:checked").length;
+		if(cheked == all){
+			$(this).closest("table").find("input[data-id='"+$(this).data("parent")+"']").prop("checked",true);
+		}else{
+			$(this).closest("table").find("input[data-id='"+$(this).data("parent")+"']").prop("checked",false);
+		}
+	
+		changeAllSelect(this);
+	})
+	
+		
+	$.each(resIds,function(i,obj){
+		$form.find("input[value='"+obj+"']").prop("checked",true);
+	})
+	
+})
+
+
+function changeAllSelect(obj){
+	//全选
+	var all = $(obj).closest("table").find("input[type='checkbox']").length;
+	var cheked = $(obj).closest("table").find("input[type='checkbox']:checked").length;
+	if(cheked + 1 == all){
+		$(obj).closest("table").find(".checkAll").prop("checked",true);
+	}else{
+		$(obj).closest("table").find(".checkAll").prop("checked",false);
+	}
+}
+
+
+
+
+
+
+function saveBtnClick(){
+	var menusIds = [];
+	var menus = $form.find("input:checked");
+	menus.each(function(i,val){
+		menusIds.push(val.value);
+	})
+	
+	//解决第一层
+	var table = $form.find("table");
+	table.each(function(i,obj){
+		var $t = $(obj);
+		if($t.find("input:checked").length > 0){
+			var rid = $t.find(".checkAll").val();
+			menusIds.push(rid);
+		
+			//解决第二层
+			var seconds = $(obj).find(".second");
+			seconds.each(function(j,sobj){
+				$ts = $(sobj);
+				var id = $ts.data("id");
+				if($ts.closest("table").find("input[data-parent='"+id+"']:checked").length > 0){
+					menusIds.push(id);
+				}
+			})
+		}
+	})
+	
+	$.post("${ctxPath}/sys/role/save/menu",{id:'${roleId}',resourceIds:menusIds.toString()},function(data){
+		if(data > 0){
+			msg.success("保存成功");
+			BootstrapDialog.closeAll();
+		}else{
+			msg.error("保存失败");
+		}
+	})
+}
+	
+</script>
+
+<style type="text/css">
+label.checkbox, input[type="radio"] + label {
+    font-weight: normal;
+}
+label.checkbox-inline input[type="checkbox"] {
+    position: relative;
+    top: -2px;
+}
+.form-inline .radio, .form-inline .checkbox {
+    display: inline-block;
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-left: 0;
+}
+</style>

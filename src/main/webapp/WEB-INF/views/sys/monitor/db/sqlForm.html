@@ -1,0 +1,75 @@
+<div class="page-content wrapper-content no-padding-bottom">
+	<div class="row">
+		<div class="col-lg-12">
+			<form action="" method="post" id="search-form"  class="form-horizontal">
+				<div class="ibox">
+					<div class="ibox-title">
+						<h5>执行SQL,(不支持DDL/DCL执行)</h5>
+					</div>
+					<div class="ibox-context align-center">
+						<textarea class="autosize-transition form-control" style="min-height:200px;resize:none;" id="sql"></textarea>
+					</div>
+					<div class="ibox-footer align-right">
+						<button type="button" class="btn btn-info" onclick="execute()">执行</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	
+	<div class="row hide" id="result">
+		<div class="col-lg-12">
+			<div class="ibox">
+				<div class="ibox-title form-title">
+					<h5>执行结果</h5>
+					<div class="ibox-tool">
+						<div class="pull-right">
+							<button type="btn btn-primary btn-sm" id="showSqlInput" onclick="showInput()" style="display:none;" class="btn btn-info">显示SQL输入框</button>
+						</div>
+					</div>
+				</div>
+				<div class="ibox-context">
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+	function execute(){
+		var sql = $("#sql").val();
+		if(sql.length <= 0){
+			msg.error("请输入SQL语句");
+			return;
+		}
+		$("#result .ibox-context").html(yunmel.helper.loadHtmlPageByPost("${ctxPath}/sys/monitor/db/result",{sql:sql}));
+		$("#result").removeClass("hide");
+		if($table){
+			$table.bootstrapTable("refreshFixedToolBar");
+		}
+	}
+	
+	var  resizeTimer = null;  
+	  
+	function doResize(){  
+		if($table){
+	 		$table.bootstrapTable("refresh");
+	 	}
+	}  
+	  
+	window.onresize = function(){  
+	  if(resizeTimer) clearTimeout(resizeTimer);  
+	  resizeTimer = setTimeout("doResize()",300);  
+	}  
+	
+	
+	function showInput(){
+		$("#search-form").show();
+  		$("#showSqlInput").hide();
+	}
+	
+</script>

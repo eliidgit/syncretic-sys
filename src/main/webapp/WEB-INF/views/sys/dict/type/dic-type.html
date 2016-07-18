@@ -1,0 +1,270 @@
+<div id="content-container" style="">
+	<div class="console-title  clearfix">
+		<div class="pull-left">
+			<h5>字典分类管理    <span class="red">(双击状态可以修改状态，单击排序号可以修改排序号)</span></h5>
+		</div>
+	</div>
+	
+	<div id="page-content">
+		<div class="panel no-margin no-border">
+			<div class="panel-body no-padding">
+				<div class="pad-btm form-inline">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="search-form pull-left">
+								<form id="search-form" class="form-inline" method="post">
+									<div class="form-group">
+						                <label class="control-label">分类名称：</label>
+						                <input type="hidden" name="id" id="id">
+						               	<input class="form-control" name="name" id="name" placeholder="请输入字典分类名称">
+						               	<button id="btnSearch" class="btn btn-default" onclick="query()" type="button">搜索</button>
+						            </div>
+								</form>
+							</div>
+							<div class="search-form pull-right">
+								<button id="btnSearch" 
+									class="btn btn-info" 
+									data-mode='page'
+									data-title='添加字典分类'
+									data-width='50%'
+									data-url='${ctxPath}/sys/dict/type/add/showlayer'
+									type="button">添加字典分类</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="table-responsive">
+					<table id="table">
+					     <thead>
+					     <tr>
+					         <th data-field="state" data-checkbox="true"></th>
+							 <th data-field="id"   data-align="center"   data-sortable="true">编号</th>
+							 <th data-field="name" data-align="left" data-sortable="true" >分类名称</th>
+							 <th data-field="code"   data-align="left" data-sortable="true" >标识符</th>
+							 <th data-field="pname"   data-align="center" data-sortable="true" >上级分类</th>
+							 <th data-field="sort" data-formatter="editSort"  data-align="center" data-sortable="true">排序号</th>
+							 <th data-field="status" data-formatter="frmUseStaus" data-align="center" data-sortable="true" >使用状态</th>
+							 <th data-field="" data-formatter="frmOp"  data-align="center" data-sortable="false" >操作</th>
+					     </tr>
+					     </thead>
+					 </table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>	
+
+
+<aside id="aside-container">
+	<div id="aside">
+		<div class="nano has-scrollbar">
+			<div class="nano-content" tabindex="0" style="right: -17px;">
+				<div class="bg-trans bord-no">
+					<ul id="treeMenu" class="ztree"></ul>
+				</div>
+			</div>
+		<div class="nano-pane" style="display: none;"><div class="nano-slider" style="height: 20px; transform: translate(0px, 0px);"></div></div></div>
+	</div>
+</aside>
+
+<div id="toolbar" class="hidden">
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='删除'
+		 data-msg="确定删除选中的字典分类吗？"
+		 data-url='${ctxPath}/sys/dict/type/deletes'
+		 data-select="true" href="javascript:;"><span class=""> 删除 </span></a>
+	<span class="margin-right">&nbsp;</span>
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='启用'
+		 data-msg="确定启用选中的字典分类吗？"
+		 data-url='${ctxPath}/sys/dict/type/update/status'
+		 data-data="{status:1}"
+		 data-select="true" href="javascript:;"><span class=""> 启用 </span></a>
+	<span class="margin-right">&nbsp;</span>
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='禁用'
+		 data-msg="确定禁用选中的字典分类吗？"
+		 data-url='${ctxPath}/sys/dict/type/update/status'
+		 data-data="{status:0}"
+		 data-select="true" href="javascript:;"><span class=""> 禁用 </span></a>
+	<span class="margin-right">&nbsp;</span>
+</div>
+
+<div id="opBtn" class="hidden">
+	<div class="action-buttons">
+		<a href="javascript:void(0)" 
+		data-mode="page" 
+		data-width='50%'
+		data-title="【{name}】编辑"
+		data-url="${ctxPath}/sys/dict/type/edit/showlayer"
+		data-data="{id:{id},parentId:{pid}}"
+		class="green" data-tip="编辑">
+		<i class="fa fa-pencil bigger-130"></i></a>
+		<a href="javascript:void(0)" 
+		data-mode="del" data-title="删除操作"
+		data-msg="你确定删除【{name}】节点及其所有的子节点吗?(慎重操作)"
+		data-url="${ctxPath}/sys/dict/type/delete/{id}" 
+		class="red" data-tip="删除"><i class="fa fa-trash-o bigger-130"></i></a>
+	</div>
+</div>
+
+<div id="editSortBox" class="hidden">
+	<form class="form-inline editableform" style="">
+		<div class="control-group form-group">
+			<div>
+				<div class="editable-input" style="position: relative;">
+					<input type="text" class="form-control input-sm"
+						onkeyup="this.value=this.value.replace(/\D/g,'')" 
+						onafterpaste="this.value=this.value.replace(/\D/g,'')"
+						style="padding-right: 24px;width:100px;"><span
+						class="editable-clear-x"
+						></span>
+				</div>
+				<div class="editable-buttons">
+					<button class="btn btn-primary btn-sm editable-submit"
+						type="submit">
+						<i class="fa fa-check"></i>
+					</button>
+					<button class="btn btn-default btn-sm editable-cancel"
+						type="button">
+						<i class="fa fa-remove"></i>
+					</button>
+				</div>
+			</div>
+			<div class="editable-error-block help-block" style="display: none;"></div>
+		</div>
+	</form>
+</div>
+
+<#systree treeData="${treeList}" rootNodeName="字典分类列表" clickCallback="clickCallback" reloadUrl="true" id="treeMenu"/>
+
+
+<script type="text/javascript">
+
+  var opBtnHtml = $("#opBtn").html();
+  var $form = $("#search-form");	
+   $.niftyAside("alignLeft");
+   $.niftyAside("brightTheme");
+   $.niftyAside("fixedPosition");
+   $.niftyAside("show");	
+
+	var _editSortHtml = $("#editSortBox").html();
+		
+	var $table = $('#table');
+    
+    $table.bootstrapTable({
+    	paginationFixed:true,
+    	sidePagination:'client',
+    	sortName:'sort',
+    	showExport:true,
+    	controlToolbar:'#toolbar',
+    	url:"${ctxPath}/sys/dict/type/list?"+$("#search-form").serialize()
+    });
+    
+    
+    function editSort(value,row){
+    	return '<a href="javascript:void(0)" onclick="editSortWin(this,'+row.id+','+value+')">'+value+'</a>';
+    }
+    
+     function editStaus(id,status){
+     	status = status === "0" ? "1":"0";
+    	$.post("${ctxPath}/sys/dict/type/update/status/"+id,{status:status},function(data){
+    		if(data > 0){
+    			msg.success("修改成功");
+				$table.bootstrapTable("updateByUniqueId",{id:id, row:{status:status}});
+    		}else{
+    			msg.error("修改失败");
+    		}
+    	},"json");
+    }
+    
+    
+    function editSortWin(obj,id,value){
+    	var that = $(obj);
+    	layer.tppm("<div id='editSortTip'>"+_editSortHtml+"</div>",obj,{
+		  tppm: [4, '#e4e6e9'],
+		  time: 0
+		});
+		var input = $("#editSortTip .editable-input input");
+		input.val(value);
+		$("#editSortTip .editable-submit").off('click').on("click",function(){
+			var bthat = $(this);
+			var v = input.val();
+			if(v == null || v == undefined){
+				v = 0;
+			}
+			var loadi = null;
+			bthat.attr("disabled","disabled");
+			$.ajax({
+				url:"${ctxPath}/sys/dict/type/update/sort/"+id,
+				data:{sort:v},
+				type:'post',
+				dataType:'json',
+				beforeSend:function(){
+					loadi = layer.load(5,0);
+				}
+			}).done(function(data){
+				layer.close(loadi); //关闭加载框
+				if(data > 0){
+					msg.success("修改成功");
+					layer.closeAll("tppm");
+					//that.text(v);
+					$table.bootstrapTable("updateByUniqueId",{id:id, row:{sort:v}});
+				}else{
+					bthat.removeAttr("disabled");
+					msg.error("修改失败");
+				}
+			}).fail(function(err){
+				layer.close(loadi); //关闭加载框
+				layer.closeAll("tppm");
+				msg.error('操作失败');
+			});
+		})
+		$("#editSortTip .editable-cancel").off('click').on("click",function(){
+			layer.closeAll("tppm");
+		})
+    }
+    
+    
+    function frmUseStaus(value,row){
+    	return value === '1' ? '<a href="javascript:void(0)" ondblclick="editStaus('+row.id+',\''+value+'\')">启用<a>' :
+    						   '<a href="javascript:void(0)" ondblclick="editStaus('+row.id+',\''+value+'\')"><span class="red">禁用</span><a>';
+    }
+    
+    
+    function frmOp(value,row){
+    	return opBtnHtml
+    	.replace(new RegExp("{id}", "g"), row.id);
+    }
+    
+    var  resizeTimer = null;  
+	  
+	function doResize(){  
+	 	$table.bootstrapTable("refresh");
+	}  
+	  
+	window.onresize = function(){  
+	  if(resizeTimer) clearTimeout(resizeTimer);  
+	  resizeTimer = setTimeout("doResize()",300);  
+	}  
+	
+	function clickCallback(event,treeId,treeNode){
+		$form.find("input[name='name']").val('');
+		$form.find("input[name='id']").val(treeNode.id);
+		$table.bootstrapTable("refresh",{url:"${ctxPath}/sys/dict/type/list?"+$("#search-form").serialize()});
+	}
+	
+	function query(){
+		var name = $form.find("input[name='name']").val();
+		searchNode(name);
+		$table.bootstrapTable("refresh",{url:"${ctxPath}/sys/dict/type/list?"+$("#search-form").serialize()});
+	}
+	
+	
+</script>

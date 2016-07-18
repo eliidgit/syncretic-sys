@@ -11,7 +11,7 @@ import com.yunmel.syncretic.beans.BaseEntity;
 @SuppressWarnings({"unused"})
 @Table(name = "sys_office")
 public class SysOffice extends BaseEntity {
-
+  private static final long serialVersionUID = -2529102827694710641L;
   private String parentId; //
   private String parentIds; // 所有父级编号
   private String areaId; //
