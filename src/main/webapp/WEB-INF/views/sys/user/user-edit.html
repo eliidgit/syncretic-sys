@@ -18,12 +18,12 @@
 			<div class="form-group">
 				<label  class="col-lg-2 control-label">所属单位</label>
 				<div class="col-lg-9">
-					<#select name="unitId" id="unitId-form" placeholder="请选择单位类型">
+					<select class="form-control select2" style="width: 100%;" name="unitId" id="unitId-form">
 						<option value=""></option>
 						@for(item in sysOffices){
 							<option value="${item.id!}" ${decode(item.id,myUnit,'selected','')}>${item.name!}</option>
 						@}
-					</#select>
+					</select>
 				</div>
 			</div>
 			<div class="form-group">
@@ -47,7 +47,7 @@
 			<div class="form-group">
 				<label  class="col-lg-2 control-label">角色</label>
 				<div class="col-lg-9">
-					<select name="roleIds" multiple class="chosen-select tag-input-style" id="user-role-update" data-placeholder="选择角色">
+					<select name="roleIds" multiple="multiple" class="select2 tag-input-style" id="user-role-update" style="width: 100%;" data-placeholder="选择角色">
 						@for(entry in rolesMap){
 							@var key = entry.key,role=entry.value;
 							<option value="${role.id!}" 
@@ -79,7 +79,7 @@
 
 <script type="text/javascript">
 	$(function(){
-	   
+	   $(".select2").select2();
 	   $('#office-user-form')
         .bootstrapValidator({
             fields: {
@@ -120,5 +120,4 @@
 	function saveBtnClick(){
 		 $('#office-user-form').data('bootstrapValidator').validate();
 	}
-	$("#user-role-update").chosen({width: "100%",search_contains: true}); 
 </script>

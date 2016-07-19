@@ -11,7 +11,7 @@
 @var placeholder = placeholder !'';
 
 @if(dictMode == "showSelect"){ //显示下拉模式
-<select class="chosen-select ${class}" name="${name}" id="${id}" data-placeholder="${placeholder}">
+<select class="form-control select2" style="width: ${width};" name="${name}" id="${id}" data-placeholder="${placeholder}">
 	@if(!isEmpty(isDefault)) {
 	<option value=""></option>
 	<option value="">全部</option>
@@ -43,4 +43,5 @@
 @if(isScript == "true"){
 	${tagBody!}
 @}
+$('.select2').select2();
 </script>

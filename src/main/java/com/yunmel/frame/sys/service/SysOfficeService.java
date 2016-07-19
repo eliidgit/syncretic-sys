@@ -48,7 +48,7 @@ public class SysOfficeService extends BaseService<SysOffice> {
    * 新增或更新SysOffice
    */
   public int saveSysOffice(SysOffice sysOffice) {
-    if (null == sysOffice.getId()) {
+    if (StrUtils.isBlank(sysOffice.getId())) {
       return this.insertSelective(sysOffice);
     } else {
       return this.updateByPrimaryKeySelective(sysOffice);
@@ -57,14 +57,12 @@ public class SysOfficeService extends BaseService<SysOffice> {
 
   public int deleteOfficeByRootId(String id) {
     int roleCount = this.beforeDeleteTreeStructure(id, "officeId", SysRole.class, SysOffice.class);
-    if (roleCount < 0)
-      return -1;
+    if (roleCount < 0) return -1;
     int userOfficeCount =
         this.beforeDeleteTreeStructure(id, "officeId", SysUser.class, SysOffice.class);
     int userCompanyCount =
         this.beforeDeleteTreeStructure(id, "companyId", SysUser.class, SysOffice.class);
-    if (userOfficeCount + userCompanyCount < 0)
-      return -1;
+    if (userOfficeCount + userCompanyCount < 0) return -1;
     int c = sysOfficeMapper.deleteOfficeByRootId(id);
 
     if (c > 0) {
@@ -101,14 +99,14 @@ public class SysOfficeService extends BaseService<SysOffice> {
     List<SysOffice> list = this.findByPatams(params);
     return new PageInfo<SysOffice>(list);
   }
-  
+
   /**
    * 不分页
    * @param params
    * @return
    */
   public List<SysOffice> findByPatams(Map<String, Object> params) {
-    if(params==null){
+    if (params == null) {
       params = Maps.newHashMap();
     }
     return sysOfficeMapper.findPageInfo(params);
@@ -241,16 +239,16 @@ public class SysOfficeService extends BaseService<SysOffice> {
   public Integer deleteOfficeBy(String[] ids) {
     int tag = 0;
     for (String id : ids) {
-      tag +=  this.updateDelFlagToDelStatusById(SysOffice.class, id);
+      tag += this.updateDelFlagToDelStatusById(SysOffice.class, id);
     }
     return tag;
   }
 
-  
-//  public List<SysOffice> findOfficeByProject(Map<String, Object> params) {
-//    
-//    return sysOfficeMapper.findOfficeByProject(params);
-//  }
+
+  // public List<SysOffice> findOfficeByProject(Map<String, Object> params) {
+  //
+  // return sysOfficeMapper.findOfficeByProject(params);
+  // }
 
 
 }

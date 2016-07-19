@@ -1,0 +1,104 @@
+<div class="page-content wrapper-content">
+	<div class="row">
+		<form class="form-horizontal" method="post" id="unit_form" 
+			action="${ctxPath}/sys/office/save">	
+			<input type="hidden" value="${unit.id!}" name="id"/>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">单位名称</label>
+				<div class="col-lg-9">
+					<input name="name"  class="form-control" value="${unit.name!}" placeholder="请输入单位名称">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">单位编码</label>
+				<div class="col-lg-9">
+					<input name="code"  class="form-control" value="${unit.code!}" placeholder="请输入单位编码">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">联系地址</label>
+				<div class="col-lg-9">
+					<input name="address"  class="form-control" value="${unit.address!}" placeholder="请输入联系地址">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">邮政编码</label>
+				<div class="col-lg-9">
+					<input name="zipCode"  class="form-control" value="${unit.zipCode!}" placeholder="请输入邮政编码">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">负责人</label>
+				<div class="col-lg-9">
+					<input name="master"  class="form-control" value="${unit.master!}" placeholder="请输入负责人">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">电话</label>
+				<div class="col-lg-9">
+					<input name="phone"  class="form-control" value="${unit.phone!}" placeholder="请输入电话">
+				</div>
+			</div>
+			<div class="form-group">
+				<label  class="col-lg-2 control-label">邮箱</label>
+				<div class="col-lg-9">
+					<input name="email"  class="form-control" value="${unit.email!}" placeholder="请输入邮箱">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>	
+
+<script type="text/javascript">
+	
+	$(function(){
+		
+	   $("#unit_form")
+	    .bootstrapValidator({
+	        fields: {
+	        	name: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '名称不能为空'
+	                    },
+	    				remote : {
+	    					message : '名称已被占用',
+	    					delay : 500,
+	    					name:'name',
+	    					data:{id:"${unit.id!''}"},
+	    					url : "${ctxPath}/sys/office/check/name"
+	    				}
+	                }
+	            },
+	            code: {
+	                validators: {
+	                    notEmpty: {
+	                        message: '编码不能为空'
+	                    },
+	    				remote : {
+	    					message : '编码已被占用',
+	    					delay : 500,
+	    					name:'code',
+	    					data:{id:"${unit.id!''}"},
+	    					url : "${ctxPath}/sys/office/check/code"
+	    				}
+	                }
+	            }
+	        }
+	    })
+	    .on('success.form.bv', function(e) {
+	        e.preventDefault();
+	        $(e.target).ajaxSubmit(function(data){
+				if(data > 0){
+					msg.success("保存成功");
+					query();
+				}
+				BootstrapDialog.closeAll();
+		    })
+	    });
+	});
+	
+	function saveBtnClick(){
+		$("#unit_form").data("bootstrapValidator").validate();
+	}
+</script>

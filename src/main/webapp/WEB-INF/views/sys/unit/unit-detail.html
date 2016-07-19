@@ -1,0 +1,75 @@
+<div class="wrapper-content">
+	<div class="row">
+		<div class="col-lg-12">
+			<table class="table table-bordered table-striped  width-100">
+				<thead>
+					<th width="100">属性</th>
+					<th>值</th>
+				</thead>
+				<tbody>
+					<tr>
+						<td>单位ID</td>
+						<td>${unit.id!}</td>
+					</tr>
+					<tr>
+						<td>区域编码</td>
+						<td>${unit.code!}</td>
+					</tr>
+					<tr>
+						<td>单位名称</td>
+						<td>${unit.name!}</td>
+					</tr>
+					<tr>
+						<td>单位类型</td>
+						<td>${uType.name!}</td>
+					</tr>
+					<tr>
+						<td>联系地址</td>
+						<td>${unit.address!}</td>
+					</tr>
+					<tr>
+						<td>邮政编码</td>
+						<td>${unit.zipCode!}</td>
+					</tr>
+					<tr>
+						<td>负责人</td>
+						<td>${unit.master!}</td>
+					</tr>
+					<tr>
+						<td>电话</td>
+						<td>${unit.phone!}</td>
+					</tr>
+					<tr>
+						<td>邮箱</td>
+						<td>${unit.email!}</td>
+					</tr>
+					<tr>
+						<td>创建者</td>
+						<td>${unit.createBy!}</td>
+					</tr>
+					<tr>
+						<td>更新者</td>
+						<td>${unit.updateBy!}</td>
+					</tr>
+					<tr>
+						<td>备注信息</td>
+						<td>${unit.remarks!}</td>
+					</tr>
+					<tr>
+						<td>删除标记</td>
+						<td>${unit.delFlag!}</td>
+					</tr>
+					<tr>
+						<td>创建时间</td>
+						<td>${strutil.formatDateLong(unit.createDate!)}</td>
+					</tr>
+					<tr>
+						<td>修改时间</td>
+						<td>${strutil.formatDateLong(unit.updateDate!)}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+		

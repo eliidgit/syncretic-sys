@@ -35,9 +35,7 @@
 	})
 	
 	function success(){
-		$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/left/menu",{select:"${pid!0}"}));
-		$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/add",{select:"${pid!0}"}));
+		$("#tree-box").html(yh.loadHtmlByPost("sys/menu/left/menu",{select:"${pid!0}"}));
+		$("#op-box").html(yh.loadHtmlByPost("sys/menu/add",{select:"${pid!0}"}));
 	}
-	
-		
 </script>

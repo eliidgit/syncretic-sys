@@ -40,6 +40,7 @@
             <value>
                 /static/** = anon
                 /login = anon
+                /login/submit = anon
                 /dl/** = anon
                 /auth/** = anon
                 /** = authc <!-- 需要认证 -->

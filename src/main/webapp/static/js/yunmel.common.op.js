@@ -2,7 +2,7 @@
 	var cuslayer = function(params){
 		var defaults = {
 			mode:'normal',
-			mainContainerSelector:'.main-content-inner',
+			mainContainerSelector:'#content-wrapper',
 			type:1, //0：信息框（默认），1：页面层，2：iframe层，3：加载层，4：tppm层。
 			title:false,
 			shade: [0.5, '#000'], //[遮罩透明度, 遮罩颜色]
@@ -37,7 +37,7 @@
 		if(mode =="batchOp"){
 			var rows = $('#' + params.table).bootstrapTable("getAllSelections");
 			if (rows.length <= 0) {
-				$.ymsg.error('请选择需要%s的数据',params.op);
+				msg.error('请选择需要%s的数据',params.op);
 				return;
 			} else {
 				var ids = [];
@@ -58,19 +58,28 @@
 				type:'post',
 				dataType:'html'
 			}).done(function(data){
-				$(".crud-detail .detail-head .title").html(params.title || '详细信息');
-				$(".crud-detail .detail-inner").removeClass("detail-hide").addClass("detail-show")
-				.find(".detail-body").html(data);
-				
-				var h = $.yh.getCenterHeight() - $(".crud-detail .detail-detail-head").height();
-				var detail_scroll = $(".crud-detail .detail-body .wrapper-content").yunmel_scroll({
-					size:h - 50
-				})
-				window.onresize = function(){
-					detail_scroll.data("yunmel_scroll").update({
-						size: $.yh.getCenterHeight() - $(".crud-detail .detail-detail-head").height()- 50
-					})
-				}
+//				$(".crud-detail .detail-head .title").html(params.title || '详细信息');
+//				$(".crud-detail .detail-inner").removeClass("detail-hide").addClass("detail-show")
+//				.find(".detail-body").html(data);
+//				
+//				var h = yh.getCenterHeight() - $(".crud-detail .detail-detail-head").height();
+//				var detail_scroll = $(".crud-detail .detail-body .wrapper-content").yunmel_scroll({
+//					size:h - 50
+//				})
+//				window.onresize = function(){
+//					detail_scroll.data("yunmel_scroll").update({
+//						size: yh.getCenterHeight() - $(".crud-detail .detail-detail-head").height()- 50
+//					})
+//				}
+				//自定页
+				layer.open({
+				  type: 1,
+				  skin: 'layui-layer-demo', //样式类名
+				  closeBtn: 0, //不显示关闭按钮
+				  shift: 2,
+				  shadeClose: true, //开启遮罩关闭
+				  content: data
+				});
 			});
 		}else if(mode == "batchOp" || mode == 'sop'){
 			var html = [];
@@ -80,13 +89,13 @@
 					  '<div class="col-sm-11">',
 							'<p style="height:35;line-height:35px;">',
 							mode == "batchOp" ?
-							$.yh.sprintf("您确定要%s选中的%s条%s吗？",params.op,params.data['ids'].length,params.name):
-							$.yh.sprintf("您确定要%s选中的%s吗？",params.op,params.name),
+							yh.sprintf("您确定要%s选中的%s条%s吗？",params.op,params.data['ids'].length,params.name):
+							yh.sprintf("您确定要%s选中的%s吗？",params.op,params.name),
 							'</p>',
 					  '</div></div>');
 			BootstrapDialog.confirm({
 				message:html.join(" "),
-				title:$.yh.sprintf("%s站内信",params.op),
+				title:yh.sprintf("%s站内信",params.op),
 				callback:function(result){
 					if(result){
 						$.ajax({
@@ -96,7 +105,7 @@
 						}).done(function(data){
 		        			if(data>0) {
 		        				if(params.success == undefined){
-		        					$.ymsg.success($.yh.sprintf("%s成功!",params.op));
+		        					//msg.success("%s成功!",params.op);
 	            					if(params.reloadurl){
 	            						location.reload();
 	            					}else{
@@ -114,18 +123,18 @@
 		        					params.success();
 		        				}
 		        			}else if(data == 0){
-		        				$.ymsg.error($.yh.sprintf('%s失败！',params.op));
+		        				msg.error(yh.sprintf('%s失败！',params.op));
 		        			}else if(data <= -1){
-		        				$.ymsg.warning($.yh.sprintf('%s失败，数据正在使用中...',params.op));
+		        				msg.warning(yh.sprintf('%s失败，数据正在使用中...',params.op));
 		        			}
 		        		}).fail(function(error){
-		        			$.ymsg.error($.yh.sprintf('%s失败,网络错误！',params.op));
+		        			msg.error(yh.sprintf('%s失败,网络错误！',params.op));
 		        		});
 					}
 				}
 			});
 		}else if(mode == 'list-mng'){//列表方式管理
-			$(params.mainContainerSelector).html($.yh.loadHtmlPage(params.url));
+			$(params.mainContainerSelector).html(yh.loadHtml(params.url));
 		}else if(mode == 'add' || mode == 'edit'){
 			BootstrapDialog.show({
 			 	title:params.title,

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.druid.support.json.JSONUtils;
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.yunmel.frame.consts.Constant;
 import com.yunmel.frame.consts.RedisKey;
@@ -23,6 +25,7 @@ import com.yunmel.frame.sys.model.SysUser;
 import com.yunmel.frame.sys.vo.SysMenuVO;
 import com.yunmel.syncretic.component.RedisService;
 import com.yunmel.syncretic.core.BaseService;
+import com.yunmel.syncretic.utils.biz.DealParamUtil;
 import com.yunmel.syncretic.utils.biz.TreeUtils;
 import com.yunmel.syncretic.utils.commons.StrUtils;
 
@@ -87,8 +90,7 @@ public class SysMenuService extends BaseService<SysMenu> {
    */
   public int deleteMenuByRootId(String id, boolean updateRedis) {
     int count = sysMenuMapper.beforeDeleteMenu(id);
-    if (count > 0)
-      return -1;
+    if (count > 0) return -1;
     int delCount = sysMenuMapper.deleteIdsByRootId(id);
     if (delCount > 0 && updateRedis) {
       putRedis();
@@ -144,8 +146,11 @@ public class SysMenuService extends BaseService<SysMenu> {
    * @param params {"name":"菜单名字","id":"菜单id"}
    * @return
    */
-  public List<SysMenu> find(Map<String, Object> params) {
-    return sysMenuMapper.findPageInfo(params);
+  public PageInfo<SysMenu> find(Map<String, Object> params) {
+    DealParamUtil.dealParam(params);
+    PageHelper.startPage(params);
+    List<SysMenu> list = sysMenuMapper.findPageInfo(params);
+    return new PageInfo<SysMenu>(list);
   }
 
 

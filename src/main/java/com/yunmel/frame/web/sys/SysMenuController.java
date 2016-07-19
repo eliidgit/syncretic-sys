@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.yunmel.frame.consts.Constant;
 import com.yunmel.frame.sys.model.SysMenu;
@@ -149,7 +150,7 @@ public class SysMenuController {
    * @return
    */
   @RequestMapping(value = "list", method = RequestMethod.POST)
-  public @ResponseBody List<SysMenu> list(@RequestParam Map<String, Object> params, Model model) {
+  public @ResponseBody PageInfo<SysMenu> list(@RequestParam Map<String, Object> params, Model model) {
     return sysMenuService.find(params);
   }
 

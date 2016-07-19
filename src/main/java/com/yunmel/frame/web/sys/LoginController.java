@@ -55,9 +55,10 @@ public class LoginController extends BaseController {
   private String index(Model model, HttpServletRequest request, String moduleName) {
     request.getSession().removeAttribute("code"); // 清除code
     SysUser user = SysUserUtils.getCacheLoginUser();
-    if (user == null) {
+    if (user == null ) {
       return "redirect:/login";
     }
+    //SecurityUtils.getSubject().isAuthenticated()
     model.addAttribute("menuList", SysUserUtils.getUserResources());
     model.addAttribute("onlineCount", SysUserUtils.getOnlineUser().size());
     return "index";
@@ -68,12 +69,9 @@ public class LoginController extends BaseController {
    * 
    * @return {String}
    */
-  @RequestMapping(value = "/login", method = RequestMethod.GET)
+  @RequestMapping(value = "login", method = RequestMethod.GET)
   public String login(HttpServletRequest request, HttpServletResponse response) {
     logger.info("GET请求登录");
-    if (SecurityUtils.getSubject().isAuthenticated()) {
-      return "redirect:/";
-    }
 
     if (request.getHeader("x-requested-with") != null
         && request.getHeader("x-requested-with").equalsIgnoreCase("XMLHttpRequest"))// 如果是ajax请求响应头会有，x-requested-with；

@@ -1,0 +1,154 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+  <h3>单位管理 </h3>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+	    <div class="col-sm-12">
+	    	 <div class="box" style="background-color: #fff;">
+	           <div class="box-header">
+	              <form class="form-inline" id="search-form" method="post">
+	          			<div class="pull-left">
+	          				<div class="form-group">
+	          					<input type="text" name="name" style="width: 200px" class="form-control" placeholder="请输入单位名称"/>
+	          				</div>
+	          				<button title="检索" type="button" onclick="query()"
+								class="btn btn-default">
+								<i class="ace-icon fa fa-search icon-on-right bigger-110"></i>
+							</button>
+	          			</div>
+	               			
+	           			<div class="pull-right">
+							<div class="dropdown pull-right" style="margin-left: 3px;">
+								  <button id="dLabel" type="button" class="btn btn-default btn-export" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								    导出
+								    <span class="caret"></span>
+								  </button>
+								  <ul class="dropdown-menu" aria-labelledby="dLabel">
+								   		<li onclick="exportExcel('curPage')">
+								   			<a>导出本页</a>
+								   		</li>
+								   		<li onclick="exportExcel('form')">
+								   			<a class="">导出搜索结果</a>
+								   		</li>
+								   		<li onclick="exportExcel('all')">
+								   			<a>导出所有</a>
+								   		</li>
+								  </ul>
+							</div>
+							<a class="btn btn-default btn-add" data-mode="add" 
+								data-url="${ctxPath}/sys/office/add/dialog" data-title="添加单位">添加</a>
+	           			</div>
+	               	</form>
+	           </div>
+	           <div class="box-body">
+	           		<table id="table">
+					     <thead>
+						     <tr>
+						         <th data-field="state" data-checkbox="true"></th>
+								 <th data-field="name"  data-formatter="frmDetail" data-align="left" data-sortable="true" >单位名称</th>
+								 <th data-field="email" data-align="left" data-sortable="true" >邮箱</th>
+								 <th data-field="phone" data-align="center" data-sortable="true" >电话</th>
+								 <th data-field="name" data-formatter="frmOp" data-align="center">操作</th>
+						     </tr>
+					     </thead>
+					 </table>
+	           </div>
+	    </div>
+    </div>
+</section>    
+
+<div id="toolbar" class="hidden">
+	<a class="btn btn-default pull-left" 
+		 data-mode='batchOp'
+		 data-table="table"
+		 data-op='删除'
+		 data-name="单位"
+		 data-url='${ctxPath}/sys/office/deletes'
+		 data-data="{status:1}"
+		 data-callback="query()"
+		 data-select="true" href="javascript:;"><span class=""> 删除</span></a>
+	 <span class="margin-right">&nbsp;</span>	 
+</div>
+<div id="opBtn" class="hidden">
+	<div class="action-buttons">
+		<a href="javascript:void(0)" 
+			data-mode="edit" 
+			data-width='50%'
+			data-title="【{name}】编辑"
+			data-url="${ctxPath}/sys/office/edit/dialog"
+			data-data="{id:'{id}'}"
+			data-callback="query()"
+			title="编辑" data-toggle="tooltip" data-placement="left"
+			class="green">
+			<i class="fa fa-pencil bigger-130"></i>
+		</a>
+		<a href="javascript:void(0)" 
+			data-mode="sop" 
+			data-op="删除"
+			data-name="单位"
+			data-url="${ctxPath}/sys/office/delete/{id}" 
+			title="删除" data-toggle="tooltip" data-placement="left"
+			class="red"
+			data-callback="query()"
+			><i class="fa fa-trash-o bigger-130"></i>
+		</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+  	var $form = null;	
+	var $table = null;
+	var opBtnHtml = null;
+	
+	$(function(){
+		$table = $("#table");
+		$form = $("#search-form");
+		opBtnHtml = $("#opBtn").html();
+    	$table.bootstrapTable({
+	    	paginationFixed:true,
+	    	sortName:'id',
+	    	controlToolbar:'#toolbar',
+	    	url:"${ctxPath}/sys/office/list?"+$("#search-form").serialize(),
+	    	onLoadSuccess:function(){
+	    		//$.ymsg.sucess("单位数据加载成功!");
+	    	}
+	    });
+	});
+	
+	function query(){
+		$table.bootstrapTable("refresh",{url:"${ctxPath}/sys/office/list?"+$("#search-form").serialize()});
+	}
+	
+	function frmOp(value,row){
+    	return opBtnHtml
+    	.replace(new RegExp("{id}", "g"), row.id)
+    	.replace(new RegExp("{pid}", "g"), row.pid)
+    	.replace(new RegExp("{name}", "g"), row.name);
+    }
+	
+	function frmDetail(value,row){
+    	var html = [];
+    	html.push('<a href="javascript:;"',
+						'data-title="【'+value+'】详情" data-width="40%" data-mode="detail"',
+						'data-url="${ctxPath}/sys/office/detail/dialog" data-data="{id:\''+row.id+'\'}"',
+						'>',
+						value,
+					'</a>');
+		return html.join(" ");
+    }
+	
+	//数据导出
+	function exportExcel(type){
+    	var ops = $table.bootstrapTable("getOptions")
+    	yunmel.downloadFile(type === 'All' ? '':"search-form","${ctxPath}/sys/office/export/"+type,
+    	 {order:ops.sortOrder,pageNum:ops.pageNumber,pageSize:ops.pageSize,sortName:ops.sortName});
+    }
+	
+	function doResize(){  
+	 	$table.bootstrapTable("refresh");
+	}
+	
+</script>
+

@@ -13,30 +13,26 @@ jQuery(function($) {
 
 function initMenuClick() {
 	var menus = $("#sidebar .sidebar-menu a[id]");
-	menus.on("click", function() {
-		var hash = webHistory.get(), href = $(this).attr("href");
-		if (("#" + hash) == href) {
+	menus.on("click",function(){
+		var hash = webHistory.get(),href = $(this).attr("href");
+		if( ("#"+hash) == href ){
 			webHistory.justShow("#");
 			webHistory.go(hash);
 		}
-		var $main_content = $("#content-wrapper");
-		webHistory.add("ajax", function(str, action, token) {
-			$main_content.html("");
-
-			$main_content.html(loadHtmlPage(str));
-
-			var curMenu = $("#sidebar .sidebar-menu li")
-					.find("a[href='#" + token + "']");
-			// $("title").html(yunmel.vars['title'] + '-'
-			// +curMenu.find('.menu-text').text())
-			changeMenu(curMenu);
-		});
-		webHistory.init();
-		$(document).tooltip({
-			selector : "[data-toggle=tooltip]",
-			container : "body"
-		});
 	});
+	
+	var $main_content = $("#content-wrapper");
+	webHistory.add("ajax", function(str, action, token) {
+		$main_content.html(loadHtmlPage(str));
+		var curMenu = $("#sidebar .sidebar-menu li").find("a[href='#" + token + "']");
+		changeMenu(curMenu);
+	});
+	
+	webHistory.init();
+	$(document).tooltip({
+        selector: "[data-toggle=tooltip]",
+        container: "body"
+    });
 }
 
 function changeMenu(obj) {

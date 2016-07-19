@@ -1,8 +1,8 @@
-<div class="ibox float-e-margins ">
-    <div class="ibox-title">
+<div class="box box-primary direct-chat direct-chat-primary">
+    <div class="box-header with-border">
         <h5><i class="fa fa-th-list bigger-120"></i>  菜单列表</h5>
     </div>
-    <div  class="ibox-content">
+    <div  class="box-body">
        <ul  id="tree">
 			<li aria-expanded="false" role="treeitem"
 				data-template="treebranch" class="tree-branch hide">
@@ -36,13 +36,14 @@
 			</li>
 		</ul>
     </div>
-    <div class="ibox-footer">
+    <div class="box-footer">
     	<a class="btn btn-primary btn-delete" onclick="deleteTrees()">删除</a>
     	<a class="btn btn-warning btn-add" onclick="addRootMenu()">添加顶层菜单</a>
     </div>
 </div>
-<script src="${ctxPath}/static/js/plugins/fuelux/fuelux.tree.js"></script>
-<script src="${ctxPath}/static/js/yunmel/yunmel.treeview.js"></script>
+
+<script src="${ctxPath}/static/plugins/fuelux/fuelux.tree.js"></script>
+<script src="${ctxPath}/static/js/yunmel.treeview.js"></script>
 
 <script type="text/javascript">
 	var $tree = null;
@@ -74,13 +75,13 @@
 	 	$this = $(obj);
 		var data =  $this.closest("li").data();
 		$("#op-title").html("编辑");
-		$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/edit/"+data.id,{}));
+		$("#op-box").html(yh.loadHtmlByPost("sys/menu/edit/"+data.id,{}));
 		yunmel.helper.scrollTop();
      }
      
      function addRootMenu(){
      	$("#op-title").html("菜单列表");
-    	$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/add",{pid:0}));
+    	$("#op-box").html(yh.loadHtmlByPost("sys/menu/add",{pid:0}));
     	yunmel.helper.scrollTop();
      }
      
@@ -88,7 +89,7 @@
 		$this = $(obj);
 		var data =  $this.closest("li").data();
 		setTitle(data);
-		$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/add",{pid:data.id}));
+		$("#op-box").html(yh.loadHtmlByPost("sys/menu/add",{pid:data.id}));
 		yunmel.helper.scrollTop();
      }
      
@@ -96,13 +97,13 @@
      function deleteTree(obj){
      	$this = $(obj);
      	var data= $this.closest("li").data();
-     	msg.confirm("删除站内信",yunmel.helper.sprintf("您确定删除【%s】菜单吗?",data.name),function(result){
+     	msg.confirm("删除菜单",yh.sprintf("您确定删除【%s】菜单吗?",data.name),function(result){
      		if(result){
 	     		$.post("${ctxPath}/sys/menu/delete/"+data.id,function(data){
 	     			if(data > 0){
 	     				msg.success("删除成功!");
-	     				$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/left/menu",{select:"${pMenu.id!0}"}));
-	     				$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/edit/"+data.id,{}));
+	     				$("#tree-box").html(yh.loadHtmlByPost("sys/menu/left/menu",{select:"${pMenu.id!0}"}));
+	     				$("#op-box").html(yh.loadHtmlByPost("sys/menu/edit/"+data.id,{}));
 	     			}else{
 	     				msg.error("删除失败!");
 	     			}
@@ -126,8 +127,8 @@
 	     		$.post("${ctxPath}/sys/menu/deletes",{ids:ids},function(data){
 	     			if(data > 0){
 	     				msg.success("删除成功!");
-	     				$("#tree-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/left/menu",{select:"${pMenu.id!0}"}));
-	     				$("#op-box").html(yunmel.helper.loadHtmlPageByPost("sys/menu/edit/"+data.id,{}));
+	     				$("#tree-box").html(yh.loadHtmlByPost("sys/menu/left/menu",{select:"${pMenu.id!0}"}));
+	     				$("#op-box").html(yh.loadHtmlByPost("sys/menu/edit/"+data.id,{}));
 	     			}else{
 	     				msg.error("删除失败!");
 	     			}

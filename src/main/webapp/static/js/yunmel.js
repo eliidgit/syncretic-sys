@@ -8,7 +8,7 @@ $(function () {
 });
 
 /*****辅助工具类*********/
-$.yh = $.YunMel.helper = {
+var yh = $.YunMel.helper = {
   //---------变量区-------------
   name:'names',
   
@@ -66,19 +66,36 @@ $.yh = $.YunMel.helper = {
 }
 
 /*****消息提示*********/
-$.ymsg = $.YunMel.msg = {
-  sucess:function(str){
-	 var msg = $.yh.sprintf(str);
+var msg = $.YunMel.msg = {
+  success:function(str){
+	 layer.msg(yh.sprintf(str),{time: 800});
   },
   error:function(str){
-	  var msg = $.yh.sprintf(str);
+	  layer.msg(yh.sprintf(str),{time: 800});
   },
   warning:function(str){
-	  var msg = $.yh.sprintf(str);
+	  layer.msg(yh.sprintf(str),{time: 800});
   },
   info:function(str){
-	  var msg = $.yh.sprintf(str);
-  }
+	  layer.msg(yh.sprintf(str),{time: 800});
+  },
+  confirm:function(title,msg,callback){
+		var html = [];
+		html.push('<div class="row"><div class="col-sm-1">',
+					'<i class="fa fa-info-circle bigger-300 orange"></i>',
+			  '</div>',
+			  '<div class="col-sm-11">',
+					'<p style="height:35;line-height:35px;">',
+					msg,
+					'</p>',
+			  '</div></div>');
+		BootstrapDialog.confirm({
+			message:html.join(" "),
+			title:title,
+			callback:callback
+		});
+	}
+  
 }
 
 /*****文件操作*********/
@@ -112,6 +129,7 @@ $.yf = $.YunMel.file = {
     $tempForm.remove();
   }
 }
+
 $(function () {
   var slideToTop = $("<div />");
   slideToTop.html('<i class="fa fa-chevron-up"></i>');
@@ -152,15 +170,6 @@ $(function () {
     $("body").animate({
       scrollTop: 0
     }, 500);
-  });
-  $(".sidebar-menu li:not(.treeview) a").click(function () {
-    var $this = $(this);
-    var target = $this.attr("href");
-    if (typeof target === 'string') {
-      $("body").animate({
-        scrollTop: ($(target).offset().top) + "px"
-      }, 500);
-    }
   });
   //Skin switcher
   var current_skin = "skin-blue";

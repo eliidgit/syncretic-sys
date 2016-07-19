@@ -20,14 +20,10 @@ import com.yunmel.syncretic.utils.commons.StrUtils;
 @Controller
 @RequestMapping("sys/log")
 public class SysLogController {
-	
-	
 	@Resource
 	private SysLogService sysLogService;
-	
 	@Resource
 	private SysDictService sysDictService;
-	
 	
 	/**
 	 * 跳转到模块页面
@@ -37,7 +33,6 @@ public class SysLogController {
 		model.addAttribute("dict", sysDictService.findJsonByTypeFromRedis("sys_log_type"));
 		return "sys/log/log";
 	}
-	
 	
 	/**
 	 * 分页显示
@@ -62,7 +57,6 @@ public class SysLogController {
 		return sysLogService.saveSysLog(sysLog);
 	}
 	
-	
 	/**
 	 * 删除
 	 */
@@ -71,17 +65,14 @@ public class SysLogController {
 		return sysLogService.deleteByPrimaryKey(id);
 	}
 	
-	
 	/**
 	 * 弹窗显示
 	 * @param params {"mode":"1.add 2.edit 3.detail}
 	 */
 	@RequestMapping(value="{mode}/showlayer",method=RequestMethod.POST)
-	public String layer(Long id,Model model){
+	public String layer(String id,Model model){
 		SysLog sysLog = sysLogService.selectByPrimaryKey(id);
 		model.addAttribute("sysLog", sysLog);
 		return "sys/log/log-detail";
 	}
-	
-
 }

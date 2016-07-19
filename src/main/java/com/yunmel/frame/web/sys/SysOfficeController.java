@@ -27,11 +27,9 @@ import com.yunmel.syncretic.utils.commons.StrUtils;
  * 
  * @author
  */
-
 @Controller
 @RequestMapping("sys/office")
 public class SysOfficeController {
-
 
   @Resource
   private SysOfficeService sysOfficeService;
@@ -65,8 +63,8 @@ public class SysOfficeController {
     // 处理编码
     params = ControllerUtils.dealCoding(params, "name");
 
-    if (params.containsKey("sortName")) {
-      params.put("sortC", StrUtils.camelhumpToUnderline(params.get("sortName").toString()));
+    if (params.containsKey("sortField")) {
+      params.put("sortField", StrUtils.camelhumpToUnderline(params.get("sortField").toString()));
     }
     return sysOfficeService.findPageInfo(params);
   }
@@ -84,12 +82,11 @@ public class SysOfficeController {
     } else if ("detail".equals(mode)) {
       SysOffice unit = sysOfficeService.selectByPrimaryKey(id);
       model.addAttribute("unit", unit);
-     
+
       return "sys/unit/unit-detail";
     }
     return null;
   }
-
 
   @RequestMapping(value = "save", method = RequestMethod.POST)
   public @ResponseBody Integer save(@ModelAttribute SysOffice sysOffice) {

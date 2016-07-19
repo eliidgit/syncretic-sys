@@ -34,7 +34,7 @@ public class SQLExecutorController {
     return "sys/monitor/db/druid";
   }
 
-  @RequestMapping(value = "sql", method = RequestMethod.GET)
+  @RequestMapping(value = "sql")
   public String showSQLForm() {
     return "sys/monitor/db/sqlForm";
   }

@@ -40,7 +40,7 @@
 		</filter>
 	</appender>
 
- 	<!--myibatis log configure-->
+ 	<!--myibatis log configure -->
     <logger name="com.apache.ibatis" level="DEBUG" additivity="false"/>
     <logger name="java.sql.Connection" level="DEBUG" additivity="false"/>
     <logger name="java.sql.Statement" level="DEBUG" additivity="false"/>
@@ -56,6 +56,7 @@
     <logger name="org.apache.shiro" level="ERROR" additivity="false"/>
     <logger name="net.sf.ehcache" level="ERROR" additivity="false"/>
     <logger name="org.apache.http" level="ERROR" additivity="false"/>
+   
 	<!-- root -->
 	<root level="debug">
 		<appender-ref ref="STDOUT" />

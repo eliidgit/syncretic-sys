@@ -24,8 +24,7 @@ import com.yunmel.syncretic.utils.net.IPUtils;
 
 @Aspect
 @Component
-public class LogAdvice
-{
+public class LogAdvice {
   private static Logger LOGGER = LoggerFactory.getLogger(LogAdvice.class);
 
   @Resource
@@ -33,29 +32,25 @@ public class LogAdvice
 
   @SuppressWarnings("unchecked")
   @Around("within(@org.springframework.stereotype.Controller *)")
-  public Object recordSysLog(ProceedingJoinPoint point) throws Throwable
-  {
+  public Object recordSysLog(ProceedingJoinPoint point) throws Throwable {
     String strMethodName = point.getSignature().getName();
     String strClassName = point.getTarget().getClass().getName();
     Object[] params = point.getArgs();
     StringBuffer bfParams = new StringBuffer();
     Enumeration<String> paraNames = null;
     HttpServletRequest request = null;
-    if (params != null && params.length > 0)
-    {
+    if (params != null && params.length > 0) {
       request =
           ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
       paraNames = request.getParameterNames();
       String key;
       String value;
-      while (paraNames.hasMoreElements())
-      {
+      while (paraNames.hasMoreElements()) {
         key = paraNames.nextElement();
         value = request.getParameter(key);
         bfParams.append(key).append("=").append(value).append("&");
       }
-      if (StringUtils.isBlank(bfParams))
-      {
+      if (StringUtils.isBlank(bfParams)) {
         bfParams.append(request.getQueryString());
       }
     }
@@ -63,18 +58,15 @@ public class LogAdvice
     String strMessage =
         String.format("[类名]:%s,[方法]:%s,[参数]:%s", strClassName, strMethodName, bfParams.toString());
     LOGGER.info(strMessage);
-    if (isWriteLog(strMethodName))
-    {
-      try
-      {
+    if (isWriteLog(strMethodName)) {
+      try {
         Subject currentUser = SecurityUtils.getSubject();
         PrincipalCollection collection = currentUser.getPrincipals();
-        if (null != collection)
-        {
+        if (null != collection) {
           String loginName = collection.getPrimaryPrincipal().toString();
           SysLog log = new SysLog();
           log.setMethod(strMethodName);
-          if(null != request){
+          if (null != request) {
             log.setRemoteAddr(IPUtils.getClientAddress(request));
             log.setRequestUri(request.getRequestURI());
             log.setUserAgent(request.getHeader("user-agent"));
@@ -84,9 +76,7 @@ public class LogAdvice
           log.setDescription(strMessage);
           sysLogService.insertSelective(log);
         }
-      }
-      catch (Exception e)
-      {
+      } catch (Exception e) {
         e.printStackTrace();
       }
     }
@@ -94,13 +84,10 @@ public class LogAdvice
     return point.proceed();
   }
 
-  private boolean isWriteLog(String method)
-  {
-    String[] pattern = {"login", "logout","save", "add", "edit", "delete", "grant"};
-    for (String s : pattern)
-    {
-      if (method.indexOf(s) > -1)
-      {
+  private boolean isWriteLog(String method) {
+    String[] pattern = {"login/submit", "logout", "save", "add", "edit", "delete", "grant"};
+    for (String s : pattern) {
+      if (method.indexOf(s) > -1) {
         return true;
       }
     }

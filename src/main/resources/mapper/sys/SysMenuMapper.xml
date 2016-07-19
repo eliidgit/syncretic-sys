@@ -62,7 +62,7 @@
 			<if test="null != name and '' != name">
 				and sr.name like concat( '%' , #{name} , '%' )
 			</if>
-			<if test="null != id and '' != id and null != name and '' != name"> 
+			<if test="null != id and '' != id"> 
 				and FIND_IN_SET(#{id},sr.parent_ids) or sr.id = #{id}
 			</if>
 		</where>

@@ -55,17 +55,17 @@ $(function(){
 	         $(e.target).ajaxSubmit(function(data){
 					if(data > 0){
 						@if(isEmpty(role)){
-							alert("添加成功!");
+							msg.success("添加成功!");
 						@}else{
-							alert("修改成功!");
+							msg.success("修改成功!");
 						@}
 						BootstrapDialog.closeAll();
 						query();
 					}else{
 						@if(isEmpty(role)){
-							alert("添加失败!");
+							msg.success("添加失败!");
 						@}else{
-							alert("修改失败!");
+							msg.success("修改失败!");
 						@}
 					}
 			    })

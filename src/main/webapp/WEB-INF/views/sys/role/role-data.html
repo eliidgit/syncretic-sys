@@ -8,10 +8,10 @@
 					<#dict type="sys_data_scope" id="data-scope-select" value="${role.dataScope!}" name="dataScope" />
 				</div>
 			</div>	
-			<div class="form-group" id="school-list">
+			<div class="form-group" id="unit-list">
 				<label  class="col-lg-3 control-label">单位列表</label>
 				<div class="col-lg-8">
-					<#select id="data-office" name="officeIds" multiple="multiple">
+					<select id="data-office" class="form-control select2" style="width: 100%;" name="officeIds" multiple="multiple">
 						@for(o in offices){
 							@var key = o.id;
 							<option value="${o.id}"
@@ -20,7 +20,7 @@
 							@}
 							>${o.name!}</option>
 						@}
-					</#select>
+					</select>
 				</div>
 			</div>
 		</form>
@@ -28,12 +28,13 @@
 </div>	
 
 <script type="text/javascript">
+	$('#data-office').select2();
 	$("#data-scope-select").on("change",function(){
 		var v = $("#data-scope-select option:selected").val();
 		if(v == 9){
-			$("#school-list").show();
+			$("#unit-list").show();
 		}else{
-			$("#school-list").hide();
+			$("#unit-list").hide();
 		}
 	}).trigger("change");
 	
@@ -41,7 +42,6 @@
 		$("#role-form").ajaxSubmit(function(data){
 			if(data > 0){
 				msg.success("修改成功");
-				BootstrapDialog.closeAll();
 			}else{
 				msg.error("修改失败");
 			}

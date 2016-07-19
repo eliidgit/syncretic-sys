@@ -1,51 +1,43 @@
-<!-- Content Header (Page header) -->
-<section class="content-header">
-  <h3>菜单管理 </h3>
-</section>
-
 <!-- Main content -->
-<section class="content">
-	<div class="box box-primary direct-chat direct-chat-primary">
-        <div class="box-header with-border">
+<section class="content" style="padding-left: 5px;padding-top: 2px;">
+	<div class="box" style="position: fixed;width:280px;" id="tree-box">
+		<div class="box-header with-border">
           <h3 class="box-title">菜单列表</h3>
         </div>
         <!-- /.box-header -->
         <div class="box-body">
-			<ul  id="tree"></ul>
+			<ul id="tree"></ul>
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
           <a class="btn btn-primary btn-mng" data-mode="list-mng" data-url="${ctxPath}/sys/menu/mng">维护菜单</a>
         </div>
-        <!-- /.box-footer-->
-     </div>
-     <div class="row" style="margin-left: 290px;">
-     	<div class="col-lg-12">
-     		<div class="box box-primary direct-chat direct-chat-primary">
-		        <div class="box-header with-border">
+	</div>
+	<div calss="row"style="margin-left: 285px;">
+		<div class="col-lg-12">
+			<div class="box">
+				<div class="box-header with-border">
 		           <h5 id="table-title">所有菜单</h5>
 		           <form action="" class="form-inline" id="search-form">
-                      	<div class="input-group">
-                      		<input type="hidden" name="id"/>
-                       		<input class="form-control" name="name" placeholder="请输入菜单名称"/>
-                        	<span class="input-group-btn"> 
-                        		<button class="btn btn-primary btn-query" type="button" onclick="query()">查询</button> 
-                        	</span>
-                      	</div>
-                      	<div class="input-group">
-                      		<span class="input-group-btn"> 
-                       			<button class="btn btn-info btn-query-all" type="button" onclick="queryAll()">显示所有</button> 
-                       		</span>
-                      	</div>
-                     </form>
+                    	<div class="input-group">
+                    		<input type="hidden" name="id"/>
+                     		<input class="form-control" name="name" placeholder="请输入菜单名称"/>
+                      	    <span class="input-group-btn"> 
+                      		<button class="btn btn-primary btn-query" type="button" onclick="query()">查询</button> 
+                      	</span>
+                    	</div>
+                    	<div class="input-group">
+                    		<span class="input-group-btn"> 
+                     			<button class="btn btn-info btn-query-all" type="button" onclick="queryAll()">显示所有</button> 
+                     		</span>
+                    	</div>
+                   </form>
 		        </div>
-		        <!-- /.box-header -->
 		        <div class="box-body">
-					 <table id="table">
-					     <thead>
-					     <tr>
+		           <table id="table">
+				       <thead>
+					      <tr>
 					         <th data-field="state" data-checkbox="true"></th>
-							 <th data-field="id"   data-align="center"   data-sortable="true">编号</th>
 							 <th data-field="name" data-formatter="frmDetail" data-align="left" data-sortable="true" >菜单名称</th>
 							 <th data-field="url"   data-align="left" data-sortable="true" >链接</th>
 							 <th data-field="pname"   data-align="center" data-sortable="true" >上级菜单</th>
@@ -54,40 +46,18 @@
 							 <th data-field="icon"   data-formatter="frmIcon" data-align="center" data-sortable="false">图标</th>
 							 <th data-field="sort" data-formatter="frmSort"  data-align="center" data-sortable="true">排序号</th>
 							 <th data-field="status" data-formatter="frmUseStaus" data-align="center" data-sortable="true" >使用状态</th>
-					     </tr>
-					     </thead>
-					 </table>
+					      </tr>
+				       </thead>
+				   </table>
 		        </div>
-		     </div>
-     	</div>
-     </div>
+			</div>
+		</div>
+	</div>
 </section>
-
-<div id="toolbar" class="hidden">
-	<a class="btn btn-default pull-left" 
-		 data-mode='batchOp'
-		 data-table="table"
-		 data-op='启用'
-		 data-name="菜单"
-		 data-url='${ctxPath}/sys/menu/update/status'
-		 data-data="{status:1}"
-		 data-callback="query()"
-		 data-select="true" href="javascript:;"><span class=""> 启用 </span></a>
-	<span class="margin-right">&nbsp;</span>
-	<a class="btn btn-default pull-left" 
-		 data-mode='batchOp'
-		 data-table="table"
-		 data-op='禁用'
-		 data-name="菜单"
-		 data-callback="query()"
-		 data-url='${ctxPath}/sys/menu/update/status'
-		 data-data="{status:0}"
-		 data-select="true" href="javascript:;"><span class=""> 禁用 </span></a>
-	<span class="margin-right">&nbsp;</span>
-</div>
 
 <script src="${ctxPath}/static/plugins/fuelux/fuelux.tree.js"></script>
 <script src="${ctxPath}/static/js/yunmel.treeview.js"></script>
+
 <script type="text/javascript">
 	var $tableTiltle = null;
 	var $tree = null;
@@ -96,7 +66,6 @@
 	var _editSortHtml = null;
 	var $table = null;
 	var y_scroll = null;
-	
 	
 	$(function(){
 		$tree = $("#tree");
@@ -108,7 +77,6 @@
 		$tree.yunmel_tree({
 	        data:${treeList}
 	    });
-	    
 	    
 	    $tree.on("click.fu.tree",function(e){
 	    	var obj = $("#tree").tree("selectedItems");
@@ -137,42 +105,16 @@
 	    });
     	
     	$table.bootstrapTable({
-	    	paginationFixed:true,
-	    	sidePagination:'client',
+	    	paginationFixed:false,
 	    	sortName:'sort',
-	    	showExport:true,
-	    	controlToolbar:'#toolbar',
+	    	showExport:false,
+	    	height:yh.getCenterHeight() - 223,
 	    	url:"${ctxPath}/sys/menu/list?"+$("#search-form").serialize(),
 	    	onLoadSuccess:function(){
-	    		msg.success("菜单加载成功");
+	    		//msg.success("菜单加载成功");
 	    		$("[data-toggle=popover]").popover();
-	    	},
-	    	onDblClickCell:function(field, value, row, $e){
-	    		if(field == 'sort'){
-	    			var nameInput = $('<input  type="text"/>').width(50);
-	    			$e.html(nameInput);
-					nameInput.val(value).keyup(function(e){
-						nameInput.val(nameInput.val().replace(/\D/g,''));
-					}).keydown(function(e) {
-						var nameInput = $(this);
-						if ($.inArray(e.keyCode, [13, 27]) !== -1) {
-							e.preventDefault();
-							if (e.keyCode === 13) {
-								nameInput.val(nameInput.val().replace(/\D/g,''));
-								var v = nameInput.val();
-								if(v.length <= 0){
-									v = 1;
-								}
-								editSortWin(row.id,v);
-							}else if(e.keyCode === 27){
-								$e.html(frmSort(value,row));
-							}
-						}
-					})[0].focus();
-	    		}
 	    	}
 	    });
-    	
     	
     	setTreeBoxHeight();
     	window.onresize = function(){  
@@ -180,8 +122,6 @@
 		  resizeTimer = setTimeout("doResize()",300);  
 		}  
 	})
-	
-    
     
     function frmSrcType(value, row){
     	return value === '0' ? '菜单资源' : '<span class="pink">按钮资源</span>';
@@ -190,16 +130,16 @@
     function frmSort(value,row){
     	return '<a href="javascript:void(0)">'+value+'</a>';
     }
-    
-     function editStaus(id,status){
+     
+    function editStaus(id,status){
      	status = status === "0" ? "1":"0";
     	$.post("${ctxPath}/sys/menu/update/status/"+id,{status:status},function(data){
     		if(data > 0){
 				$table.bootstrapTable("updateByUniqueId",{id:id, row:{status:status}});
 				$('*').tooltip('hide')
-    			msg.success("修改成功");
+    			//msg.success("修改成功");
     		}else{
-    			msg.error("修改失败");
+    			//msg.error("修改失败");
     		}
     	},"json");
     }
@@ -247,7 +187,6 @@
     						   '<a href="javascript:void(0)" title="双击修改状态" data-toggle="tooltip" data-placement="left" ondblclick="editStaus('+row.id+',\''+value+'\')"><span class="red">禁用</span><a>';
     }
 
-
 	function queryAll(){
 		$tableTiltle.html("所有菜单");
 		$form.find("input[name='name']").val('');
@@ -259,23 +198,14 @@
 		$table.bootstrapTable("refresh",{url:"${ctxPath}/sys/menu/list?"+$("#search-form").serialize()});
 	}
 	
-	
 	function setTreeBoxHeight(){
-		var h=  yunmel.helper.getCenterHeight() - $(".page-content").css("padding-top").replace("px","")*1;
-		$("#tree-box").height(h).find(".ibox-content").height(h - 120);
-		if(y_scroll == null){
-			y_scroll = $("#tree-box .ibox-content").yunmel_scroll({
-			size:h-120,
-			mouseWheelLock: true
-			});
-			y_scroll = y_scroll.data('yunmel_scroll');
-		}else{
-			y_scroll.update({size:h-120})
-		}
+		var h = yh.getCenterHeight() - 131;
+		$("#tree-box").height(h).find(".box-body").height(h - 96);
 	}
-
+	
 	function doResize(){  
 	 	$table.bootstrapTable("refresh");
 	 	setTreeBoxHeight();
 	}  
 </script>
+
