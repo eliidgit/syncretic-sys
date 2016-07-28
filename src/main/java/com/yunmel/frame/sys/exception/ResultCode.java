@@ -31,24 +31,7 @@ public enum ResultCode {
 	ACCOUNT_PASSWORD_ERRO(2005,"密码错误"),
 	REGISTER_PARAMS_ERROR(2006,"用户注册参数错误"),
 	REGISTER_ROLEORDEPART_ERROR(2007,"用户角色错误"),
-	REGISTER_USERNAME_EXIST(2008,"用户名已经存在"),
-	
-	
-	//上传相关
-	TOWER_NOT_FOUND(3000,"杆塔不存在") ,
-	SECTION_NOT_FOUND(4000,"标段不存在") ,
-	DISLINE_NOT_FOUND(5000,"放线段不存在") ,
-	PROCESS_NOT_FOUND(6000,"分类不存在") ,
-	PROCESS_ERROR(6001,"分类错误") ,
-	
-	
-	
-	PIC_NOT_FOUND(8000,"图片不存在"),
-	PIC_STATUS_PASS_ERROR(8001,"文件已通过审批"),
-	
-	FILE_NOT_FOUND(7000,"文件不存在"),
-	FILE_LENGTH_ERROR(7001,"文件长度错误"),
-	FILE_UPLOAD_ERROR(7002,"文件上传错误");
+	REGISTER_USERNAME_EXIST(2008,"用户名已经存在");
 	
 	
 	

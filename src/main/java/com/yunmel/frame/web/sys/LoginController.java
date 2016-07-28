@@ -55,10 +55,10 @@ public class LoginController extends BaseController {
   private String index(Model model, HttpServletRequest request, String moduleName) {
     request.getSession().removeAttribute("code"); // 清除code
     SysUser user = SysUserUtils.getCacheLoginUser();
-    if (user == null ) {
+    if (user == null) {
       return "redirect:/login";
     }
-    //SecurityUtils.getSubject().isAuthenticated()
+    // SecurityUtils.getSubject().isAuthenticated()
     model.addAttribute("menuList", SysUserUtils.getUserResources());
     model.addAttribute("onlineCount", SysUserUtils.getOnlineUser().size());
     return "index";
