@@ -4,7 +4,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.yunmel.frame.consts.Constant;
-import com.yunmel.syncretic.beans.BaseEntity;
+import com.yunmel.syncretic.bean.BaseEntity;
 
 /**
  * @author yunmel

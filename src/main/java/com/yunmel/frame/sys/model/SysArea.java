@@ -3,7 +3,7 @@ package com.yunmel.frame.sys.model;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import com.yunmel.syncretic.beans.BaseEntity;
+import com.yunmel.syncretic.bean.BaseEntity;
 
 /**
  * @author yunmel

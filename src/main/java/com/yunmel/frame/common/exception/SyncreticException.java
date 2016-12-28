@@ -8,7 +8,7 @@ import com.yunmel.frame.common.utils.MessageUtils;
  * 基础异常
  */
 @SuppressWarnings("serial")
-public class PPMException extends RuntimeException {
+public class SyncreticException extends RuntimeException {
   // 所属模块
   private String module;
   /**
@@ -27,26 +27,26 @@ public class PPMException extends RuntimeException {
   private String defaultMessage;
 
 
-  public PPMException(String module, String code, Object[] args, String defaultMessage) {
+  public SyncreticException(String module, String code, Object[] args, String defaultMessage) {
     this.module = module;
     this.code = code;
     this.args = args;
     this.defaultMessage = defaultMessage;
   }
 
-  public PPMException(String module, String code, Object[] args) {
+  public SyncreticException(String module, String code, Object[] args) {
     this(module, code, args, null);
   }
 
-  public PPMException(String module, String defaultMessage) {
+  public SyncreticException(String module, String defaultMessage) {
     this(module, null, null, defaultMessage);
   }
 
-  public PPMException(String code, Object[] args) {
+  public SyncreticException(String code, Object[] args) {
     this(null, code, args, null);
   }
 
-  public PPMException(String defaultMessage) {
+  public SyncreticException(String defaultMessage) {
     this(null, null, null, defaultMessage);
   }
 

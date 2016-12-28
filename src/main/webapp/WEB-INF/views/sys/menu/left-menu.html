@@ -42,8 +42,6 @@
     </div>
 </div>
 
-<script src="${ctxPath}/static/plugins/fuelux/fuelux.tree.js"></script>
-<script src="${ctxPath}/static/js/yunmel.treeview.js"></script>
 
 <script type="text/javascript">
 	var $tree = null;
@@ -55,7 +53,8 @@
 			selectable: true,
 	        data:${treeList}
 	    });
-	    
+		alert(111);
+	    console.log(${treeList})
 	    $tree.tree('discloseAll');
 	});
 	

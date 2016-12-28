@@ -12,9 +12,6 @@
      </div>
      
 	<div class="row" style="margin-left: 290px;"></div>
-
-<script src="${ctxPath}/static/js/plugins/fuelux/fuelux.tree.js"></script>
-<script src="${ctxPath}/static/js/yunmel/yunmel.treeview.js"></script>
 <script type="text/javascript">
 	var dict_type_id = 0;
 	var resizeTimer = null;
@@ -49,17 +46,8 @@
 	});
 	
 	function setTreeBoxHeight(){
-		var h=  yunmel.helper.getCenterHeight() - $(".page-content").css("padding-top").replace("px","")*1;
-		$("#tree-box").height(h).find(".ibox-content").height(h - 120);
-		if(y_scroll == null){
-			y_scroll = $("#tree-box .ibox-content").yunmel_scroll({
-			size:h-120,
-			mouseWheelLock: true
-			});
-			y_scroll = y_scroll.data('yunmel_scroll');
-		}else{
-			y_scroll.update({size:h-120})
-		}
+		var h = yh.getCenterHeight() - 131;
+		$("#tree-box").height(h).find(".box-body").height(h - 96);
 	}
 
 	function doResize(){  
